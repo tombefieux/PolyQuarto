@@ -34,3 +34,7 @@
 # CodeBlocks
 *.depend
 *.cbp
+*.layout
+
+#Photoshop
+*.psd
