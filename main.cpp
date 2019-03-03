@@ -1,11 +1,20 @@
+#include <chrono>
+#include <thread>
+
 #include <SFML/Graphics.hpp>
+
+#include "GameEngine.h"
+#include "Config.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Quarto");
+    GameEngine engine;
 
+    // actually start a game with this names
+    engine.start("Bob", "Cedric");
+
+    // game loop
     while (window.isOpen())
     {
         sf::Event event;
@@ -16,8 +25,11 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+        engine.render(window);
         window.display();
+
+        // sleep (for the FPS)
+        this_thread::sleep_for(chrono::milliseconds(1000 / (long) FPS));
     }
 
     return 0;

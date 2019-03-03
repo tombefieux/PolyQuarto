@@ -8,13 +8,13 @@ using namespace std;
 
 class Player
 {
-private:
-    string name;
+    private:
+        string name;
 
-public:
-    Player(){};
-    Player(string);
-    ~Player(){};
+    public:
+        Player(){};
+        Player(string);
+        ~Player(){};
 
 };
 
