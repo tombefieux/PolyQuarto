@@ -81,16 +81,16 @@ bool GameEngine::isWonLine4(int const& i, int const& j)
     x = i;
     y = j;
     incr = 3-j;
-    for (y; y<=incr; y++)
+    for (; y<=incr; y++)
     {
         if (inCommon(grid[x][y], grid[i][j]))
         {
             cpt++;
         }
         else break;
-    };
+    }
     y = j;
-    for (y; y >= 0; y--)
+    for (; y >= 0; y--)
     {
         if (inCommon(grid[x][y],grid[i][j]))
         {
@@ -109,7 +109,7 @@ bool GameEngine::isWonColumn4(int const& i, int const& j)
     x = i;
     y = j;
     incr = 3-i;
-    for (x; x<=incr; x++)
+    for (; x<=incr; x++)
     {
         if (inCommon(grid[x][y],grid[i][j]))
         {
@@ -118,7 +118,7 @@ bool GameEngine::isWonColumn4(int const& i, int const& j)
         else break;
     };
     x=i;
-    for (x; x >= 0; x--)
+    for (; x >= 0; x--)
     {
         if (inCommon(grid[x][y],grid[i][j]))
         {
@@ -150,20 +150,20 @@ bool GameEngine::inCommon(Pawn* uno, Pawn* dos)
 {
     if(commonPoints.empty())
     {
-        commonPoints=uno->inCommon(dos);
-        bool temp=false;
-        for(int i =0; i<4; i++)
+        commonPoints = uno->inCommon(dos);
+        bool temp = false;
+        for(int i = 0; i < 4; i++)
         {
-            if(commonPoints[i]==true) temp=commonPoints[i];
+            if(commonPoints[i] == true) temp = commonPoints[i];
         }
         return temp;
     }
     else {
         dos->inCommon(commonPoints);
-        bool temp=false;
-        for(int i =0; i<4; i++)
+        bool temp = false;
+        for(int i = 0; i < 4; i++)
         {
-            if(commonPoints[i]==true) temp=commonPoints[i];
+            if(commonPoints[i] == true) temp = commonPoints[i];
         }
         return temp;
     }
