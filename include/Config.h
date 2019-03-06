@@ -16,9 +16,15 @@ const int FPS = 30;
 
 const string IMAGES_PATH = "assets/images/";
 
+const int GRID_SIZE = 4;
+
 const int START_AVAILABLE_PAWN_LIST_X = 40;
 const int START_AVAILABLE_PAWN_LIST_Y = 15;
 const int SPACE_BETWEEN_AVAILABLE_PAWN = 20;
 const int PAWN_SIZE = 40;
+
+const int START_GRID_PAWN_X = 342;
+const int START_GRID_PAWN_Y = 113;
+const int SPACE_BETWEEN_PAWN = 32;
 
 #endif // CONFIG_H_INCLUDED

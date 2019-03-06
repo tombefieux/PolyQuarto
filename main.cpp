@@ -20,7 +20,15 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            // mouse click event
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                if (event.mouseButton.button == sf::Mouse::Left)
+                    engine.handleLeftClick(event.mouseButton.x, event.mouseButton.y);
+            }
+
+            // window closed
+            else if (event.type == sf::Event::Closed)
                 window.close();
         }
 
