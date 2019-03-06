@@ -16,7 +16,53 @@ GameEngine::~GameEngine()
 {
     delete this->player1;
     delete this->player2;
+
+    clearGrid();
 }
+
+bool GameEngine::isPlayable(int i, int j)
+{
+    if(grid[i][j] == nullptr) return true;
+    else return false;
+}
+
+void GameEngine::clearGrid()
+{
+    for (int i = 0; i < this->grid.size(); i++)
+        for (int j = 0; j < this->grid[i].size(); j++)
+            delete grid[i][j];
+
+    this->grid.clear();
+}
+
+void GameEngine::addPawn(int i, int j)
+{
+    if(!pawnPlayed)
+    {
+        if(this->isPlayable(i, j))
+        {
+            grid[i][j] = selectedPawn;
+            selectedPawn = nullptr;
+            cout<<"Sélectionnez une pièce pour votre adversaire";
+
+        }
+        else cout<<"MDR t'es con !";
+    }
+    else cout<<"MDR t'es con !";
+
+}
+
+void GameEngine::selectPawn(int i)
+{
+    if(selectedPawn ==  nullptr)
+    {
+        selectedPawn = availablePawn[i];
+        availablePawn[i] = nullptr;
+        isPlayer1Turn = !isPlayer1Turn;
+    }
+
+}
+
 
 void GameEngine::loadImages()
 {
@@ -39,7 +85,7 @@ void GameEngine::loadAvailablePawns()
         for (int b = 0; b < 2; b++)
             for (int c = 0; c < 2; c++)
                 for (int d = 0; d < 2; d++)
-                    this->availablePawn.push_back(Pawn((bool) a, (bool) b, (bool) c, (bool) d));
+                    this->availablePawn.push_back(new Pawn((bool) a, (bool) b, (bool) c, (bool) d));
 }
 
 void GameEngine::render(sf::RenderWindow &window)
@@ -53,7 +99,7 @@ void GameEngine::render(sf::RenderWindow &window)
     for (int i = 0; i < (int) this->availablePawn.size(); i++)
     {
         sf::Sprite temp;
-        temp.setTexture(*this->availablePawn.at(i).getTexture());
+        temp.setTexture(*this->availablePawn.at(i)->getTexture());
 
         if(i < 8)
             temp.setPosition(START_AVAILABLE_PAWN_LIST_X, START_AVAILABLE_PAWN_LIST_Y + (PAWN_SIZE + SPACE_BETWEEN_AVAILABLE_PAWN) * i);

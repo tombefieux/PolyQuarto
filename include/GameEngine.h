@@ -14,13 +14,13 @@
 class GameEngine
 {
     private:
-        std::vector< vector<Pawn> > grid;
+        std::vector<vector<Pawn*>> grid;
         Player *player1;
         Player *player2;
-        bool isPlayer1turn = true;
-        Pawn selectedPawn;
-        std::vector<Pawn> availablePawn;
-        int form;
+        bool isPlayer1Turn = true;
+        Pawn* selectedPawn;
+        std::vector<Pawn*> availablePawn;
+        bool pawnPlayed;
 
         // graphics
         sf::Texture background;              /** The background image sprite. */
@@ -34,6 +34,10 @@ class GameEngine
         void addPawn(int i, int j);
         void SelectPawn(int i, int j);
         bool isPlayable(int i, int j);
+        void afficher();
+        vector<Pawn>* getAvailablePawn();
+        Pawn* getSelectedPawn();
+        void selectPawn(int i);
 
         // graphics
         /**
@@ -44,6 +48,14 @@ class GameEngine
 
 
     private:
+
+        Player* getCurrentPlayer();
+
+        /**
+        * This funtion clears the grid vector.
+        */
+        void clearGrid();
+
         /**
         * This function loads the available pawns.
         */
