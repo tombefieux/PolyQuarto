@@ -37,6 +37,8 @@ class Pawn
         * This function loads the good texture with the attributes value.
         */
         void loadTextureFromAttributes();
+        vector<bool> inCommon(Pawn*);
+        vector<bool> inCommon(vector<Pawn>);
 
 };
 

@@ -21,6 +21,7 @@ class GameEngine
         Pawn* selectedPawn;
         std::vector<Pawn*> availablePawn;
         bool pawnPlayed;
+        vector<bool> commonPoints;
 
         // graphics
         sf::Texture background;              /** The background image sprite. */
@@ -30,7 +31,9 @@ class GameEngine
         ~GameEngine();
 
         void start(std::string p1Name, std::string p2Name);
-        bool isWon(int i, int j);
+        bool isWon4(int i, int j);
+        bool isWon4Line4(int i, int j);
+        bool isWon4Column4(int i, int j);
         void addPawn(int i, int j);
         void SelectPawn(int i, int j);
         bool isPlayable(int i, int j);
