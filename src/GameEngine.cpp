@@ -75,6 +75,100 @@ void GameEngine::selectPawn(int const& i)
     }
 }
 
+bool GameEngine::isWonLine4(int const& i, int const& j)
+{
+    int x, y,incr, cpt = 0;
+    x = i;
+    y = j;
+    incr = 3-j;
+    for (y; y<=incr; y++)
+    {
+        if (inCommon(grid[x][y], grid[i][j]))
+        {
+            cpt++;
+        }
+        else break;
+    };
+    y = j;
+    for (y; y >= 0; y--)
+    {
+        if (inCommon(grid[x][y],grid[i][j]))
+        {
+            cpt++;
+        }
+        else break;
+    }
+    if(cpt>=4) return true;
+    commonPoints.clear();
+    return false;
+}
+
+bool GameEngine::isWonColumn4(int const& i, int const& j)
+{
+    int x, y,incr, cpt = 0;
+    x = i;
+    y = j;
+    incr = 3-i;
+    for (x; x<=incr; x++)
+    {
+        if (inCommon(grid[x][y],grid[i][j]))
+        {
+            cpt++;
+        }
+        else break;
+    };
+    x=i;
+    for (x; x >= 0; x--)
+    {
+        if (inCommon(grid[x][y],grid[i][j]))
+        {
+            cpt++;
+        }
+        else break;
+    }
+    if(cpt>=4) return true;
+    commonPoints.clear();
+    return false;
+}
+
+bool GameEngine::isWon4(int const& i, int const& j)
+{
+    if(isWonLine4(i, j))
+    {
+        cout << "Gagné" << endl;
+        return true;
+    }
+    if(isWonColumn4(i, j))
+    {
+        cout << "Gagné" << endl;
+        return true;
+    }
+    return false;
+}
+
+bool GameEngine::inCommon(Pawn* uno, Pawn* dos)
+{
+    if(commonPoints.empty())
+    {
+        commonPoints=uno->inCommon(dos);
+        bool temp=false;
+        for(int i =0; i<4; i++)
+        {
+            if(commonPoints[i]==true) temp=commonPoints[i];
+        }
+        return temp;
+    }
+    else {
+        dos->inCommon(commonPoints);
+        bool temp=false;
+        for(int i =0; i<4; i++)
+        {
+            if(commonPoints[i]==true) temp=commonPoints[i];
+        }
+        return temp;
+    }
+}
+
 void GameEngine::loadImages()
 {
     this->background.loadFromFile(IMAGES_PATH + "background.png");

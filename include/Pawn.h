@@ -24,6 +24,9 @@ class Pawn
         Pawn(bool bright, bool small, bool square, bool hollow);
         ~Pawn();
 
+        vector<bool> inCommon(Pawn*);
+        void inCommon(vector<bool>&);
+
         /**
         * Getter of the texture of the pawn.
         * @return the texture of the pawn
