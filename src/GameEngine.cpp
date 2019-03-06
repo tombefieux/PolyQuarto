@@ -44,6 +44,7 @@ void GameEngine::addPawn(int i, int j)
             grid[i][j] = selectedPawn;
             selectedPawn = nullptr;
             cout<<"Sélectionnez une pièce pour votre adversaire";
+            pawnPlayed = true;
 
         }
         else cout<<"MDR t'es con !";
