@@ -60,6 +60,7 @@ void GameEngine::selectPawn(int i)
         selectedPawn = availablePawn[i];
         availablePawn[i] = nullptr;
         isPlayer1Turn = !isPlayer1Turn;
+        pawnPlayed = false;
     }
 
 }
