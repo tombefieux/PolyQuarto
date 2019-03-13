@@ -46,37 +46,9 @@ void GameEngine::clearGrid()
     this->grid.clear();
 }
 
-void GameEngine::addPawn(int const& i, int const& j)
+bool GameEngine::isWon(int const& i, int const& j) const
 {
-    if(!pawnPlayed)
-    {
-        if(this->isPlayable(i, j))
-        {
-            grid[i][j] = selectedPawn;
-            selectedPawn = nullptr;
-            cout << "Sélectionnez une pièce pour votre adversaire" << endl;
-            pawnPlayed = true;
-            bool res = isWon4(i, j);
-        }
-        else cout<<"MDR t'es con !" << endl;
-    }
-    else cout<<"MDR t'es con !" << endl;
-
-}
-
-void GameEngine::selectPawn(int const& i)
-{
-    if(selectedPawn ==  nullptr)
-    {
-        selectedPawn = availablePawn[i];
-        availablePawn[i] = nullptr;
-        isPlayer1Turn = !isPlayer1Turn;
-        pawnPlayed = false;
-    }
-}
-
-bool GameEngine::isWonLine4(int const& i, int const& j)
-{
+    /*
     int x, y, cpt = 0;
     x = i;
     y = j;
@@ -109,76 +81,46 @@ bool GameEngine::isWonLine4(int const& i, int const& j)
     }
     if(cpt>=4) return true;
     commonPoints.clear();
+
+     */
     return false;
 }
 
-bool GameEngine::isWonColumn4(int const& i, int const& j)
+void GameEngine::addPawn(int const& i, int const& j)
 {
-    int x, y,incr, cpt = 0;
-    x = i;
-    y = j;
-    incr = 3-i;
-    for (; x<grid.size(); x++)
+    if(selectedPawn != nullptr)
     {
-        if (inCommon(grid[x][y],grid[i][j]))
+        if(this->isPlayable(i, j))
         {
-            cpt++;
+            grid[i][j] = selectedPawn;
+            selectedPawn = nullptr;
+            cout << "Sélectionnez une pièce pour votre adversaire" << endl;
+
+            // if won
+            if(isWon(i, j))
+                cout << "Nice you have won!" << endl;
         }
-    };
-    x=i;
-    for (; x >= 0; x--)
-    {
-        if (inCommon(grid[x][y],grid[i][j]))
-        {
-            cpt++;
-        }
+        else cout<<"MDR t'es con !" << endl;
     }
-    if(cpt>=4) return true;
-    commonPoints.clear();
-    return false;
+    else cout<<"MDR t'es con !" << endl;
+
 }
 
-bool GameEngine::isWon4(int const& i, int const& j)
+Player* GameEngine::getCurrentPlayer()
 {
-    if(isWonLine4(i, j))
-    {
-        cout << "Gagné" << endl;
-        return true;
-    }
-
- /*   if(isWonColumn4(i, j))
-    {
-        cout << "Gagné" << endl;
-        return true;
-    }
-*/
-    return false;
-}
-
-bool GameEngine::inCommon(Pawn* uno, Pawn* dos)
-{
-    if(commonPoints.empty())
-    {
-        commonPoints = uno->inCommon(dos);
-        cout<< "Valeurs du vector commonPoints : "<< commonPoints[0] << " "<<commonPoints[1] << " "<<commonPoints[2] << " "<< commonPoints[3] <<endl;
-        bool temp = false;
-        for(int i = 0; i < 4; i++)
-        {
-            if(commonPoints[i] == true) temp = commonPoints[i];
-        }
-        return temp;
-    }
-
+    if(this->isPlayer1Turn)
+        return this->player1;
     else
+        return this->player2;
+}
+
+void GameEngine::selectPawn(int const& i)
+{
+    if(selectedPawn ==  nullptr)
     {
-        vector<bool> pointsValue = uno->getPoints();
-        dos->inCommon(commonPoints, pointsValue);
-        bool temp = false;
-        for(int i = 0; i < 4; i++)
-        {
-            if(commonPoints[i] == true) temp = commonPoints[i];
-        }
-        return temp;
+        selectedPawn = availablePawn[i];
+        availablePawn[i] = nullptr;
+        isPlayer1Turn = !isPlayer1Turn;
     }
 }
 
@@ -271,16 +213,6 @@ void GameEngine::render(sf::RenderWindow &window) const
         }
     }
 
-    // display the selected pawn if there's one
-    if(this->selectedPawn != nullptr)
-    {
-        sf::Sprite temp;
-        temp.setTexture(*this->selectedPawn->getTexture());
-        temp.setPosition(sf::Mouse::getPosition(window).x - PAWN_SIZE / 2, sf::Mouse::getPosition(window).y - PAWN_SIZE / 2);
-
-        window.draw(temp);
-    }
-
     // display pawn on the grid
     for (int i = 0; i < (int) this->grid.size(); i++)
         for (int j = 0; j < (int) this->grid.at(i).size(); j++)
@@ -296,6 +228,16 @@ void GameEngine::render(sf::RenderWindow &window) const
 
                 window.draw(temp);
             }
+
+    // display the selected pawn if there's one
+    if(this->selectedPawn != nullptr)
+    {
+        sf::Sprite temp;
+        temp.setTexture(*this->selectedPawn->getTexture());
+        temp.setPosition(sf::Mouse::getPosition(window).x - PAWN_SIZE / 2, sf::Mouse::getPosition(window).y - PAWN_SIZE / 2);
+
+        window.draw(temp);
+    }
 }
 
 void GameEngine::handleLeftClick(int const& x, int const& y)

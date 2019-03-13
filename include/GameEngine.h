@@ -13,36 +13,57 @@
 
 class GameEngine
 {
-    private:
-        std::vector<vector<Pawn*>> grid;
-        Player *player1;
-        Player *player2;
-        bool isPlayer1Turn = true;
-        Pawn* selectedPawn;
-        std::vector<Pawn*> availablePawn;
-        bool pawnPlayed;
-        vector<bool> commonPoints;
+private:
+        std::vector<vector<Pawn*>> grid;    /** The grid of the game. */
+        Player *player1;                    /** The player one. */
+        Player *player2;                    /** The player one. */
+        bool isPlayer1Turn = true;          /** If it's to the first player to play. */
+        Pawn* selectedPawn;                 /** The current selected pawn. */
+        std::vector<Pawn*> availablePawn;   /** The pawns that are available. */
 
         // graphics
         sf::Texture background;              /** The background image sprite. */
 
-    public:
+public:
+        /**
+         * THe constructor.
+         */
         GameEngine();
+
+        /**
+         * Te destructor.
+         */
         ~GameEngine();
 
+        /**
+         * This function start a game with two player.
+         * @param p1Name: the first player
+         * @param p2Name: the second player
+         */
         void start(std::string p1Name, std::string p2Name);
 
-        bool isWon4(int const& i, int const& j);
-        bool isWonLine4(int const& i, int const& j);
-        bool isWonColumn4(int const& i, int const& j);
+        /**
+         * This function checks if the game is won with a pawn at one position.
+         * @param i: line of the pawn
+         * @param j: column of the pawn
+         * @return if the game is won with this pawn
+         */
+        bool isWon(int const& i, int const& j) const;
 
+        /**
+         * This function adds a pawn in the grid (the selected one).
+         * @param i: the line
+         * @param j: the column
+         */
         void addPawn(int const& i, int const& j);
+
+        /**
+         * This function returns if we can play at a position.
+         * @param i: the line
+         * @param j: the column
+         * @return if we can play
+         */
         bool isPlayable(int const& i, int const& j) const;
-
-        vector<Pawn>* getAvailablePawn() const;
-        Pawn* getSelectedPawn() const;
-
-        bool inCommon(Pawn*, Pawn*);
 
         // graphics
         /**
@@ -61,6 +82,10 @@ class GameEngine
 
     private:
 
+        /**
+         * This function returns the current player.
+         * @return the current player
+         */
         Player* getCurrentPlayer();
 
         /**
