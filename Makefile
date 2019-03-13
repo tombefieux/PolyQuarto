@@ -3,7 +3,7 @@ LIBS=-lsfml-graphics -lsfml-window -lsfml-system
 all: PolyQuarto
 
 main.o: main.cpp
-	mkdir obj 
+	mkdir -p obj 
 	g++ -c "main.cpp" -o obj/main.o	
 	
 GameEngine.o: src/GameEngine.cpp
@@ -14,10 +14,13 @@ Pawn.o: src/Pawn.cpp
 	
 Player.o: src/Player.cpp
 	g++ -c "src/Player.cpp" -o obj/Player.o
+	
+Shape.o: src/Shape.cpp
+	g++ -c "src/Shape.cpp" -o obj/Shape.o
 
-PolyQuarto: main.o GameEngine.o Pawn.o Player.o
+PolyQuarto: main.o GameEngine.o Pawn.o Player.o Shape.o
 	@echo "** Building the game"
-	g++ -o PolyQuarto obj/main.o obj/GameEngine.o obj/Pawn.o obj/Player.o $(LIBS)
+	g++ -o PolyQuarto obj/main.o obj/GameEngine.o obj/Pawn.o obj/Player.o obj/Shape.o $(LIBS)
 
 clean:
 	@echo "** Removing object files and executable..."

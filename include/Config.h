@@ -27,9 +27,9 @@ const int START_GRID_PAWN_X = 342;
 const int START_GRID_PAWN_Y = 113;
 const int SPACE_BETWEEN_PAWN = 32;
 
-enum ShapeName {Line = 0, Columm = 1};
+enum ShapeName {Line = 0};
 
-const bool SHAPES[][][] = {
+const bool SHAPES[1][4][4] = {
 
     // Line
     {
@@ -37,14 +37,6 @@ const bool SHAPES[][][] = {
         {false, false, false, false},
         {false, false, false, false},
         {false, false, false, false}
-    },
-
-    // Column
-    {
-        {true, false, false, false},
-        {true, false, false, false},
-        {true, false, false, false},
-        {true, false, false, false}
     }
 };
 
