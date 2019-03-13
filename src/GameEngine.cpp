@@ -28,7 +28,7 @@ void GameEngine::start(string p1Name, string p2Name)
 
     loadAvailablePawns();
 
-    cout << "Sélectionnez une pièce pour votre adversaire";
+    cout << "Sélectionnez une pièce pour votre adversaire" << endl;
 }
 
 bool GameEngine::isPlayable(int const& i, int const& j) const
@@ -54,13 +54,13 @@ void GameEngine::addPawn(int const& i, int const& j)
         {
             grid[i][j] = selectedPawn;
             selectedPawn = nullptr;
-            cout << "Sélectionnez une pièce pour votre adversaire";
+            cout << "Sélectionnez une pièce pour votre adversaire" << endl;
             pawnPlayed = true;
-
+            bool res = isWon4(i, j);
         }
-        else cout<<"MDR t'es con !";
+        else cout<<"MDR t'es con !" << endl;
     }
-    else cout<<"MDR t'es con !";
+    else cout<<"MDR t'es con !" << endl;
 
 }
 
@@ -77,29 +77,36 @@ void GameEngine::selectPawn(int const& i)
 
 bool GameEngine::isWonLine4(int const& i, int const& j)
 {
-    int x, y,incr, cpt = 0;
+    int x, y, cpt = 0;
     x = i;
     y = j;
-    incr = 3-j;
-    for (; y<=incr; y++)
+
+    for (; y<grid.size() && grid[x][y] != nullptr; y++)
     {
+        if(!commonPoints.empty())
+        {
+            cout<<"Coordonées de la case de base : " << x << " " << y <<endl;
+           cout<< "Valeurs du vector commonPoints : "<< commonPoints[0] << " "<<commonPoints[1] << " "<<commonPoints[2] << " "<< commonPoints[3] <<endl;
+        }
         if (inCommon(grid[x][y], grid[i][j]))
         {
             cpt++;
         }
-        else break;
     }
-
     y = j;
-    for (; y >= 0; y--)
+    for (; y >= 0 && grid[x][y] != nullptr; y--)
     {
+        if(!commonPoints.empty())
+        {
+            cout<<"Coordonées de la case de base : " << x << " " << y <<endl;
+           cout<< "Valeurs du vector commonPoints : "<< commonPoints[0] << " "<<commonPoints[1] << " "<<commonPoints[2] << " "<< commonPoints[3] <<endl;
+        }
+
         if (inCommon(grid[x][y],grid[i][j]))
         {
             cpt++;
         }
-        else break;
     }
-
     if(cpt>=4) return true;
     commonPoints.clear();
     return false;
@@ -111,13 +118,12 @@ bool GameEngine::isWonColumn4(int const& i, int const& j)
     x = i;
     y = j;
     incr = 3-i;
-    for (; x<=incr; x++)
+    for (; x<grid.size(); x++)
     {
         if (inCommon(grid[x][y],grid[i][j]))
         {
             cpt++;
         }
-        else break;
     };
     x=i;
     for (; x >= 0; x--)
@@ -126,7 +132,6 @@ bool GameEngine::isWonColumn4(int const& i, int const& j)
         {
             cpt++;
         }
-        else break;
     }
     if(cpt>=4) return true;
     commonPoints.clear();
@@ -140,11 +145,13 @@ bool GameEngine::isWon4(int const& i, int const& j)
         cout << "Gagné" << endl;
         return true;
     }
-    if(isWonColumn4(i, j))
+
+ /*   if(isWonColumn4(i, j))
     {
         cout << "Gagné" << endl;
         return true;
     }
+*/
     return false;
 }
 
@@ -153,6 +160,7 @@ bool GameEngine::inCommon(Pawn* uno, Pawn* dos)
     if(commonPoints.empty())
     {
         commonPoints = uno->inCommon(dos);
+        cout<< "Valeurs du vector commonPoints : "<< commonPoints[0] << " "<<commonPoints[1] << " "<<commonPoints[2] << " "<< commonPoints[3] <<endl;
         bool temp = false;
         for(int i = 0; i < 4; i++)
         {
@@ -160,8 +168,11 @@ bool GameEngine::inCommon(Pawn* uno, Pawn* dos)
         }
         return temp;
     }
-    else {
-        dos->inCommon(commonPoints);
+
+    else
+    {
+        vector<bool> pointsValue = uno->getPoints();
+        dos->inCommon(commonPoints, pointsValue);
         bool temp = false;
         for(int i = 0; i < 4; i++)
         {

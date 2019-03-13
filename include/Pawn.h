@@ -25,7 +25,8 @@ class Pawn
         ~Pawn();
 
         vector<bool> inCommon(Pawn*);
-        void inCommon(vector<bool>&);
+        void inCommon(vector<bool>&, const vector<bool>&);
+        vector<bool> getPoints();
 
         /**
         * Getter of the texture of the pawn.

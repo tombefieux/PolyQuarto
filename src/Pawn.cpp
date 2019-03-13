@@ -22,25 +22,29 @@ Pawn::~Pawn()
 vector<bool> Pawn::inCommon(Pawn * p)
 {
     vector<bool> temp;
-    if (this->bright==p->bright)
-        temp.push_back(true);
-    else temp.push_back(false);
-    if (this->small==p->small)
-        temp.push_back(true);
-    else temp.push_back(false);
-    if (this->square==p->square)
-        temp.push_back(true);
-    else temp.push_back(false);
-    if (this->hollow==p->hollow)
-        temp.push_back(true);
-    else temp.push_back(false);
+
+    temp.push_back(this->bright==p->bright);
+    temp.push_back(this->small==p->small);
+    temp.push_back(this->square==p->square);
+    temp.push_back(this->hollow==p->hollow);
+
     return temp;
 }
 
 
-void Pawn::inCommon(vector<bool> &commonPoints)
+void Pawn::inCommon(vector<bool> &commonPoints, const vector<bool> &pointsValue)
 {
-    if (this->bright==commonPoints[0])
+    vector<bool> tempP = this->getPoints();
+    for (int i =0; i<4; i++)
+    {
+        if (commonPoints[i])
+        {
+            if(tempP[i] != pointsValue[i])
+                commonPoints[i] = false;
+        }
+    }
+
+ /*   if (this->bright==pointsValue[0])
         commonPoints[0]=true;
     else commonPoints[0]=false;
     if (this->small==commonPoints[1])
@@ -52,9 +56,19 @@ void Pawn::inCommon(vector<bool> &commonPoints)
     if (this->hollow==commonPoints[3])
         commonPoints[3]=true;
     else commonPoints[3]=false;
-
+*/
 }
 
+
+vector<bool> Pawn::getPoints()
+{
+    vector<bool> temp;
+    temp.push_back(this->bright);
+    temp.push_back(this->small);
+    temp.push_back(this->square);
+    temp.push_back(this->hollow);
+    return temp;
+}
 
 sf::Texture* Pawn::getTexture()
 {
