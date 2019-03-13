@@ -1,4 +1,4 @@
-#include "GameEngine.h"
+#include "../include/GameEngine.h"
 #include <iostream>
 #include <string>
 
@@ -89,6 +89,7 @@ bool GameEngine::isWonLine4(int const& i, int const& j)
         }
         else break;
     }
+
     y = j;
     for (; y >= 0; y--)
     {
@@ -98,6 +99,7 @@ bool GameEngine::isWonLine4(int const& i, int const& j)
         }
         else break;
     }
+
     if(cpt>=4) return true;
     commonPoints.clear();
     return false;

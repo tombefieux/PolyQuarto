@@ -38,3 +38,6 @@
 
 #Photoshop
 *.psd
+
+#Ubuntu
+.directory

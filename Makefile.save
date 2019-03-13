@@ -1,0 +1,35 @@
+LIBS=-lsfml-graphics -lsfml-window -lsfml-system
+
+all: PolyQuarto
+
+main.o: main.cpp GameEngine.h Config.h
+        g++ -c "main.cpp" -o main.o -W -wall
+
+GameEngine.o: src/GameEngine.cpp
+        g++ -c "PlayState.cpp" -o PlayState.o
+
+Game.o: Game.cpp
+        g++ -c "Game.cpp" -o Game.o
+
+Object.o: Object.cpp
+        g++ -c "Object.cpp" -o Object.o
+
+Player.o: Player.cpp
+        g++ -c "Player.cpp" -o Player.o
+
+PolyQuarto: main.o PlayState.o Object.o Player.o
+        @echo "** Building the game"
+        g++ -o main.o Game.o State.o PlayState.o Object.o Player.o $(LIBS)
+
+clean:
+        @echo "** Removing object files and executable..."
+        rm -f thegame *.o
+
+install:
+        @echo '** Installing...'
+        cp thegame /usr/bin
+
+uninstall:
+        @echo '** Uninstalling...'
+        rm -f /usr/bin/thegame
+ 

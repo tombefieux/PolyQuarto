@@ -3,8 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "GameEngine.h"
-#include "Config.h"
+#include "include/GameEngine.h"
+#include "include/Config.h"
 
 int main()
 {
