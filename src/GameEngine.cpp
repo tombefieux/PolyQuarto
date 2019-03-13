@@ -15,8 +15,8 @@ GameEngine::GameEngine()
 
 GameEngine::~GameEngine()
 {
-    delete this->player1;
-    delete this->player2;
+    delete this->shape;
+    delete this->selectedPawn;
 
     clearGrid();
 }

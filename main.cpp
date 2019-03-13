@@ -12,7 +12,9 @@ int main()
     GameEngine engine;
 
     // actually start a game with this names
-    engine.start(new Player("Bob"), new Player("Cedric"), ShapeName::Invaders);
+    Player* player1 = new Player("Bob");
+    Player* player2 = new Player("Patrick");
+    engine.start(player1, player2, ShapeName::Invaders);
 
     // game loop
     while (window.isOpen())
@@ -39,6 +41,9 @@ int main()
         // sleep (for the FPS)
         this_thread::sleep_for(chrono::milliseconds(1000 / (long) FPS));
     }
+
+    delete player1;
+    delete player2;
 
     return 0;
 }
