@@ -27,14 +27,62 @@ const int START_GRID_PAWN_X = 342;
 const int START_GRID_PAWN_Y = 113;
 const int SPACE_BETWEEN_PAWN = 32;
 
-enum ShapeName {Line = 0};
+enum ShapeName {Line = 0, LeftL = 1, RightL = 2, Square = 3, LeftZ = 4, RightZ = 5, Invaders = 6};
 
-const bool SHAPES[1][4][4] = {
+const bool SHAPES[7][4][4] = {
 
     // Line
     {
         {true, true, true, true},
         {false, false, false, false},
+        {false, false, false, false},
+        {false, false, false, false}
+    },
+
+    // LeftL
+    {
+        {true, false, false, false},
+        {true, true, true, false},
+        {false, false, false, false},
+        {false, false, false, false}
+    },
+
+    // RightL
+    {
+        {false, false, true, false},
+        {true, true, true, false},
+        {false, false, false, false},
+        {false, false, false, false}
+    },
+
+    // Square
+    {
+        {true, true, false, false},
+        {true, true, false, false},
+        {false, false, false, false},
+        {false, false, false, false}
+    },
+
+    // LeftZ
+    {
+        {false, true, true, false},
+        {true, true, false, false},
+        {false, false, false, false},
+        {false, false, false, false}
+    },
+
+    // RightZ
+    {
+        {true, true, false, false},
+        {false, true, true, false},
+        {false, false, false, false},
+        {false, false, false, false}
+    },
+
+    // Invaders
+    {
+        {false, true, false, false},
+        {true, true, true, false},
         {false, false, false, false},
         {false, false, false, false}
     }

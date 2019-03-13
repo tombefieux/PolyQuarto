@@ -50,6 +50,13 @@ public:
     std::vector<std::vector<std::vector<int>>> getPossibleCoordinatesToCheck(int const& i, int const& j) const;
 
     /**
+    * This function returns every coordinates (that represent a shape) for every rotations and positions of the shape
+    * in the grid that are possible.
+    * @return Returns the list of coordinates.
+    */
+    std::vector<std::vector<std::vector<int>>> getAllPossibleCoordinatesInGrid() const;
+
+    /**
     * This function returns every coordinates possible for the shape.
     * @return The list of list of coordinates (representing the shape) that are possible in the grid
     */

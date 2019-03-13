@@ -55,6 +55,29 @@ vector<int> Shape::getRectangle() const
 
 vector<vector<vector<int>>> Shape::getPossibleCoordinatesToCheck(int const& i, int const& j) const
 {
+    vector<vector<vector<int>>> allPossibilities = getAllPossibleCoordinatesInGrid();
+    vector<vector<vector<int>>> result;
+
+    // for each shape
+    for (int a = 0; a < allPossibilities.size(); a++)
+    {
+        // see if the i j coordinates are in the shape
+        bool contained = false;
+        // for each coordinate of the shape
+        for (int b = 0; b < allPossibilities[a].size() && !contained; b++)
+            if(allPossibilities[a][b][0] == i && allPossibilities[a][b][1] == j)
+                contained = true;
+
+        // if contained add it
+        if(contained)
+            result.push_back(allPossibilities[a]);
+    }
+
+    return result;
+}
+
+vector<vector<vector<int>>> Shape::getAllPossibleCoordinatesInGrid() const
+{
     vector<vector<vector<int>>> result;
     Shape currentShape(*this);
 

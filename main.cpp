@@ -4,29 +4,10 @@
 #include <SFML/Graphics.hpp>
 
 #include "include/GameEngine.h"
-#include "include/Shape.h"
 #include "include/Config.h"
-
-#include <vector>
 
 int main()
 {
-    Shape shape(ShapeName::Line);
-    std::vector<std::vector<std::vector<int>>> result = shape.getPossibleCoordinatesToCheck(0, 0);
-    std::cout << "-----------------------------------------------------------------" << endl;
-    for (int i = 0; i < result.size(); i++)
-    {
-        for (int j = 0; j < result[i].size(); j++)
-        {
-            std::cout << result[i][j][0] << " " << result[i][j][1] << endl;
-        }
-
-        std::cout << "----" << endl;
-    }
-
-
-
-
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Quarto");
     GameEngine engine;
 
