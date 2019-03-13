@@ -9,6 +9,7 @@
 
 #include "Pawn.h"
 #include "Player.h"
+#include "Shape.h"
 #include "Config.h"
 
 class GameEngine
@@ -20,6 +21,7 @@ private:
         bool isPlayer1Turn = true;          /** If it's to the first player to play. */
         Pawn* selectedPawn;                 /** The current selected pawn. */
         std::vector<Pawn*> availablePawn;   /** The pawns that are available. */
+        Shape* shape;                       /** The shape to play with. */
 
         // graphics
         sf::Texture background;              /** The background image sprite. */
@@ -36,11 +38,12 @@ public:
         ~GameEngine();
 
         /**
-         * This function start a game with two player.
-         * @param p1Name: the first player
-         * @param p2Name: the second player
+         * This function start a game with two player and a shape.
+         * @param player1: the first player
+         * @param player2: the second player
+         * @param shapeName: the name of the shape to play with
          */
-        void start(std::string p1Name, std::string p2Name);
+        void start(Player* player2, Player* player1, ShapeName const& shapeName);
 
         /**
          * This function checks if the game is won with a pawn at one position.

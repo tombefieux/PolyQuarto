@@ -21,10 +21,11 @@ GameEngine::~GameEngine()
     clearGrid();
 }
 
-void GameEngine::start(string p1Name, string p2Name)
+void GameEngine::start(Player* player2, Player* player1, ShapeName const& shapeName)
 {
-    this->player1 = new Player(p1Name);
-    this->player2 = new Player(p2Name);
+    this->player1 = player1;
+    this->player2 = player2;
+    this->shape = new Shape(shapeName);
 
     loadAvailablePawns();
 
@@ -48,41 +49,38 @@ void GameEngine::clearGrid()
 
 bool GameEngine::isWon(int const& i, int const& j) const
 {
-    /*
-    int x, y, cpt = 0;
-    x = i;
-    y = j;
+    // get ALL the possibilities of shapes at this point for the shape of the game
+    vector<vector<vector<int>>> possibilitiesForLine = this->shape->getPossibleCoordinatesToCheck(i, j);
 
-    for (; y<grid.size() && grid[x][y] != nullptr; y++)
+    // for each shape possibility
+    for (int a = 0; a < possibilitiesForLine.size(); a++)
     {
-        if(!commonPoints.empty())
+        bool stillOkForBright = true, stillOkForSmall = true, stillOkForSquare = true, stillOkForHollow = true;
+        Pawn* firstPawn = this->grid[possibilitiesForLine[a][0][0]][possibilitiesForLine[a][0][1]];
+
+        if(firstPawn != nullptr)
         {
-            cout<<"Coordonées de la case de base : " << x << " " << y <<endl;
-           cout<< "Valeurs du vector commonPoints : "<< commonPoints[0] << " "<<commonPoints[1] << " "<<commonPoints[2] << " "<< commonPoints[3] <<endl;
-        }
-        if (inCommon(grid[x][y], grid[i][j]))
-        {
-            cpt++;
+            // for each coordinate
+            bool stop = false;
+            for (int b = 1; b < possibilitiesForLine[a].size() && !stop; b++)
+            {
+                Pawn* currentPawn = this->grid[possibilitiesForLine[a][b][0]][possibilitiesForLine[a][b][1]];
+
+                if(currentPawn != nullptr) {
+                    stillOkForBright = (stillOkForBright && firstPawn->getPoints()[0] == currentPawn->getPoints()[0]);
+                    stillOkForSmall = (stillOkForSmall && firstPawn->getPoints()[1] == currentPawn->getPoints()[1]);
+                    stillOkForSquare = (stillOkForSquare && firstPawn->getPoints()[2] == currentPawn->getPoints()[2]);
+                    stillOkForHollow = (stillOkForHollow && firstPawn->getPoints()[3] == currentPawn->getPoints()[3]);
+                }
+                else
+                    stop = true;
+            }
+
+            if(!stop && (stillOkForBright || stillOkForHollow || stillOkForSmall || stillOkForSquare))
+                return true;
         }
     }
-    y = j;
-    for (; y >= 0 && grid[x][y] != nullptr; y--)
-    {
-        if(!commonPoints.empty())
-        {
-            cout<<"Coordonées de la case de base : " << x << " " << y <<endl;
-           cout<< "Valeurs du vector commonPoints : "<< commonPoints[0] << " "<<commonPoints[1] << " "<<commonPoints[2] << " "<< commonPoints[3] <<endl;
-        }
 
-        if (inCommon(grid[x][y],grid[i][j]))
-        {
-            cpt++;
-        }
-    }
-    if(cpt>=4) return true;
-    commonPoints.clear();
-
-     */
     return false;
 }
 

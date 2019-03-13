@@ -12,7 +12,7 @@ int main()
     GameEngine engine;
 
     // actually start a game with this names
-    engine.start("Bob", "Cedric");
+    engine.start(new Player("Bob"), new Player("Cedric"), ShapeName::Invaders);
 
     // game loop
     while (window.isOpen())

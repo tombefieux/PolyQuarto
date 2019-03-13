@@ -35,6 +35,7 @@ class Pawn
         sf::Texture* getTexture();
 
 
+
     private:
         // graphics
         /**
