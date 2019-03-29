@@ -138,7 +138,7 @@ void GameEngine::loadAvailablePawns()
                     this->availablePawn.push_back(new Pawn((bool) a, (bool) b, (bool) c, (bool) d));
 }
 
-int GameEngine::getPawnIndexWithCoordiante(int const& x, int const& y) const
+int GameEngine::getPawnIndexWithCoordinate(int const& x, int const& y) const
 {
     int result = -1;
 
@@ -167,7 +167,7 @@ int GameEngine::getPawnIndexWithCoordiante(int const& x, int const& y) const
     return result;
 }
 
-void GameEngine::getGridIndexWithCoordiante(int const& x, int const& y, int& iIndex, int& jIndex) const
+void GameEngine::getGridIndexWithCoordinate(int const& x, int const& y, int& iIndex, int& jIndex) const
 {
     iIndex = -1;
     jIndex = -1;
@@ -244,7 +244,7 @@ void GameEngine::handleLeftClick(int const& x, int const& y)
     if(this->selectedPawn != nullptr)
     {
         int iGridIndex, jGridIndex;
-        getGridIndexWithCoordiante(x, y, iGridIndex, jGridIndex);
+        getGridIndexWithCoordinate(x, y, iGridIndex, jGridIndex);
         if(iGridIndex != -1)
             addPawn(iGridIndex, jGridIndex);
     }
@@ -253,7 +253,7 @@ void GameEngine::handleLeftClick(int const& x, int const& y)
     else
     {
         // if it's on a pawn we select it
-        int pawnIndexWithClick = getPawnIndexWithCoordiante(x, y);
+        int pawnIndexWithClick = getPawnIndexWithCoordinate(x, y);
         if(pawnIndexWithClick != -1)
             selectPawn(pawnIndexWithClick);
     }

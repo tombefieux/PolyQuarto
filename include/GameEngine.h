@@ -119,7 +119,7 @@ public:
         * @param y: the y coordinate int he window
         * @return the index of the pawn at (x, y) or -1 if there's no pawn at this place
         */
-        int getPawnIndexWithCoordiante(int const& x, int const& y) const;
+        int getPawnIndexWithCoordinate(int const& x, int const& y) const;
 
         /**
         * This function returns the indexes in the grid for a coordinate in the window.
@@ -128,7 +128,7 @@ public:
         * @param iIndex: the i index in the grid (-1 if not found)
         * @param jIndex: the j index in the grid (-1 if not found)
         */
-        void getGridIndexWithCoordiante(int const& x, int const& y, int& iIndex, int& jIndex) const;
+        void getGridIndexWithCoordinate(int const& x, int const& y, int& iIndex, int& jIndex) const;
 
 };
 
