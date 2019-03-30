@@ -14,7 +14,6 @@ class Shape
 private:
     bool** grid;  /** The grid containing the shape. */
 
-
 public:
 
     /**
@@ -65,7 +64,7 @@ public:
     /**
      * This function rotates a shape of 90 degrees (clock wise).
      */
-     void rotate();
+    void rotate();
 
 };
 

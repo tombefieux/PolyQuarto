@@ -9,6 +9,7 @@ GameEngine::GameEngine()
     this->grid.resize(4);
     this->selectedPawn = nullptr;
     for(int i = 0; i<4; i++) this->grid[i].resize(4);
+    this->engineIsRunning = true;
 
     loadImages();
 }
@@ -26,6 +27,7 @@ void GameEngine::start(Player* player2, Player* player1, ShapeName const& shapeN
     this->player1 = player1;
     this->player2 = player2;
     this->shape = new Shape(shapeName);
+    this->gameIsRunning = true;
 
     loadAvailablePawns();
 
@@ -96,7 +98,10 @@ void GameEngine::addPawn(int const& i, int const& j)
 
             // if won
             if(isWon(i, j))
+            {
                 cout << "Nice you have won!" << endl;
+                this->gameIsRunning = false;
+            }
         }
         else cout<<"MDR t'es con !" << endl;
     }
@@ -114,7 +119,7 @@ Player* GameEngine::getCurrentPlayer()
 
 void GameEngine::selectPawn(int const& i)
 {
-    if(selectedPawn ==  nullptr)
+    if(selectedPawn ==  nullptr && this->gameIsRunning)
     {
         selectedPawn = availablePawn[i];
         availablePawn[i] = nullptr;
@@ -258,4 +263,20 @@ void GameEngine::handleLeftClick(int const& x, int const& y)
             selectPawn(pawnIndexWithClick);
     }
 
+}
+
+bool GameEngine::getEngineIsRunning() const
+{
+    return this->engineIsRunning;
+}
+
+bool GameEngine::getGameIsRunning() const
+{
+    return this->gameIsRunning;
+}
+
+void GameEngine::endEngine()
+{
+    this->gameIsRunning = false;
+    this->engineIsRunning = false;
 }

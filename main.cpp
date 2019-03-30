@@ -19,27 +19,39 @@ int main()
     // game loop
     while (window.isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
+
+
+        // TODO: menu stuff
+
+
+
+        // while the engine needs to render
+        while(engine.getEngineIsRunning() && window.isOpen())
         {
-            // mouse click event
-            if (event.type == sf::Event::MouseButtonPressed)
+            // check events
+            sf::Event event;
+            while (window.pollEvent(event))
             {
-                if (event.mouseButton.button == sf::Mouse::Left)
-                    engine.handleLeftClick(event.mouseButton.x, event.mouseButton.y);
+                // mouse click event
+                if (event.type == sf::Event::MouseButtonPressed)
+                {
+                    if (event.mouseButton.button == sf::Mouse::Left)
+                        engine.handleLeftClick(event.mouseButton.x, event.mouseButton.y);
+                }
+
+                    // window closed
+                else if (event.type == sf::Event::Closed)
+                    window.close();
             }
 
-            // window closed
-            else if (event.type == sf::Event::Closed)
-                window.close();
+            // render
+            window.clear();
+            engine.render(window);
+            window.display();
+
+            // sleep (for the FPS)
+            this_thread::sleep_for(chrono::milliseconds(1000 / (long) FPS));
         }
-
-        window.clear();
-        engine.render(window);
-        window.display();
-
-        // sleep (for the FPS)
-        this_thread::sleep_for(chrono::milliseconds(1000 / (long) FPS));
     }
 
     delete player1;
