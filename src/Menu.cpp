@@ -3,24 +3,108 @@
 Menu::Menu(GameEngine* engine)
 {
     this->engine = engine;
-    player1 = new Player("Joueur 1");
-    player2 = new Player("Joueur 2");
+    this->player1 = nullptr;
+    this->player2 = nullptr;
+    this->currentMenuType = MenuType::PlayerNumber;
+    this->selectedShape = ShapeName::Invaders;
 
-    this->engine->start(player1, player2, ShapeName::Invaders);
+    this->onePlayerButton = new Button(BUTTON_X, 200, "Un joueur");
+    this->twoPlayersButton = new Button(BUTTON_X, 280, "Deux joueurs");
+
+    this->background.loadFromFile(IMAGES_PATH + "menuBackground.png");
 }
 
 Menu::~Menu()
 {
     delete player1;
     delete player2;
+
+    delete onePlayerButton;
+    delete twoPlayersButton;
 }
 
 void Menu::handleLeftClick(int const& x, int const& y)
 {
+    // depends of the current type of menu
+    switch (this->currentMenuType) {
+        case PlayerNumber:
+            if(this->twoPlayersButton->isClickedOnIt(x, y))
+            {
+                onePlayer = false;
+                this->currentMenuType = MenuType::Shape;
 
+                if(player1 != nullptr)
+                    delete player1;
+                player1 = new Player("Joueur 1");
+
+                if(player2 != nullptr)
+                    delete player2;
+                player2 = new Player("Joueur 2");
+
+                // TEMP
+                lunchEngine();
+            }
+
+            else if(this->onePlayerButton->isClickedOnIt(x, y))
+            {
+                onePlayer = true;
+                this->currentMenuType = MenuType::Difficulty;
+
+                if(player1 != nullptr)
+                    delete player1;
+                player1 = new Player("Joueur 1");
+            }
+            break;
+
+        case Difficulty:
+            break;
+
+        case Shape:
+            break;
+    }
 }
 
 void Menu::render(sf::RenderWindow &window) const
 {
+    sf::Sprite sprite;
+    sprite.setTexture(this->background);
+    window.draw(sprite);
 
+    // depends of the current type of menu
+    switch (this->currentMenuType) {
+        case PlayerNumber:
+            drawPLayerNumber(window);
+            break;
+
+        case Difficulty:
+            drawDifficulty(window);
+            break;
+
+        case Shape:
+            drawShape(window);
+            break;
+    }
+}
+
+void Menu::drawPLayerNumber(sf::RenderWindow &window) const
+{
+    this->onePlayerButton->render(window);
+    this->twoPlayersButton->render(window);
+}
+
+void Menu::drawDifficulty(sf::RenderWindow &window) const
+{
+
+}
+
+
+void Menu::drawShape(sf::RenderWindow &window) const
+{
+
+}
+
+void Menu::lunchEngine()
+{
+    this->engine->start(this->player1, this->player2, this->selectedShape);
+    this->currentMenuType = MenuType::PlayerNumber;
 }

@@ -23,7 +23,7 @@ private:
     std::vector<Pawn*> availablePawn;   /** The pawns that are available. */
     Shape* shape;                       /** The shape to play with. */
     bool engineIsRunning = false;       /** If the engine is running or not. */
-    bool gameIsRunning = false;       /** If the game is running or not. */
+    bool gameIsRunning = false;         /** If the game is running or not. */
 
     // graphics
     sf::Texture background;              /** The background image sprite. */

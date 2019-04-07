@@ -9,7 +9,6 @@ GameEngine::GameEngine()
     this->grid.resize(4);
     this->selectedPawn = nullptr;
     for(int i = 0; i<4; i++) this->grid[i].resize(4);
-    this->engineIsRunning = true;
 
     loadImages();
 }
@@ -27,6 +26,7 @@ void GameEngine::start(Player* player2, Player* player1, ShapeName const& shapeN
     this->player1 = player1;
     this->player2 = player2;
     this->shape = new Shape(shapeName);
+    this->engineIsRunning = true;
     this->gameIsRunning = true;
 
     loadAvailablePawns();

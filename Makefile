@@ -21,9 +21,12 @@ Shape.o: src/Shape.cpp
 Menu.o: src/Menu.cpp
 	g++ -c "src/Menu.cpp" -o obj/Menu.o
 
-PolyQuarto: main.o GameEngine.o Pawn.o Player.o Shape.o Menu.o
+Button.o: src/Button.cpp
+	g++ -c "src/Button.cpp" -o obj/Button.o
+
+PolyQuarto: main.o GameEngine.o Pawn.o Player.o Shape.o Menu.o Button.o
 	@echo "** Building the game"
-	g++ -o PolyQuarto obj/main.o obj/GameEngine.o obj/Pawn.o obj/Player.o obj/Shape.o obj/Menu.o $(LIBS)
+	g++ -o PolyQuarto obj/main.o obj/GameEngine.o obj/Pawn.o obj/Player.o obj/Shape.o obj/Menu.o obj/Button.o $(LIBS)
 
 clean:
 	@echo "** Removing object files and executable..."
