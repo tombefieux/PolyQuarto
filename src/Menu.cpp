@@ -8,8 +8,13 @@ Menu::Menu(GameEngine* engine)
     this->currentMenuType = MenuType::PlayerNumber;
     this->selectedShape = ShapeName::Invaders;
 
+    this->returnToNumber = new Button(20, 20, "Retour");
+
     this->onePlayerButton = new Button(BUTTON_X, 200, "Un joueur");
     this->twoPlayersButton = new Button(BUTTON_X, 280, "Deux joueurs");
+
+    this->easyButton = new Button(BUTTON_X, 200, "Facile");
+    this->hardButton = new Button(BUTTON_X, 280, "Difficile");
 
     this->background.loadFromFile(IMAGES_PATH + "menuBackground.png");
 }
@@ -42,7 +47,7 @@ void Menu::handleLeftClick(int const& x, int const& y)
                 player2 = new Player("Joueur 2");
 
                 // TEMP
-                lunchEngine();
+                launchEngine();
             }
 
             else if(this->onePlayerButton->isClickedOnIt(x, y))
@@ -57,9 +62,36 @@ void Menu::handleLeftClick(int const& x, int const& y)
             break;
 
         case Difficulty:
+            if(this->easyButton->isClickedOnIt(x, y))
+            {
+                this->currentMenuType = MenuType::Shape;
+
+                // TODO: change for IA
+                if(player2 != nullptr)
+                    delete player2;
+                player2 = new Player("IA");
+            }
+
+            else if(this->hardButton->isClickedOnIt(x, y))
+            {
+                this->currentMenuType = MenuType::Shape;
+
+                // TODO: change for IA
+                if(player2 != nullptr)
+                    delete player2;
+                player2 = new Player("IA");
+            }
+
+            else if(this->returnToNumber->isClickedOnIt(x, y))
+                this->currentMenuType = MenuType::PlayerNumber;
+
             break;
 
         case Shape:
+
+
+
+            // launchEngine();
             break;
     }
 }
@@ -94,7 +126,9 @@ void Menu::drawPLayerNumber(sf::RenderWindow &window) const
 
 void Menu::drawDifficulty(sf::RenderWindow &window) const
 {
-
+    this->easyButton->render(window);
+    this->hardButton->render(window);
+    this->returnToNumber->render(window);
 }
 
 
@@ -103,7 +137,7 @@ void Menu::drawShape(sf::RenderWindow &window) const
 
 }
 
-void Menu::lunchEngine()
+void Menu::launchEngine()
 {
     this->engine->start(this->player1, this->player2, this->selectedShape);
     this->currentMenuType = MenuType::PlayerNumber;

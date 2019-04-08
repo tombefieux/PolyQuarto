@@ -22,9 +22,16 @@ private:
     MenuType currentMenuType;           /** Te current type of menu. */
     bool onePlayer;                     /** If the player want to play alone. */
 
+    Button* returnToNumber;              /** Button to return to the main menu. */
+
     // for player menu
     Button* onePlayerButton;             /** Button to select one player. */
     Button* twoPlayersButton;            /** Button to select two players. */
+
+    // for difficulty menu
+    Button* easyButton;                  /** Button to select easy difficulty. */
+    Button* hardButton;                  /** Button to select hard difficulty. */
+
 
     // graphics
     sf::Texture background;              /** The background image sprite. */
@@ -68,12 +75,9 @@ private:
      void drawShape(sf::RenderWindow &window) const;
 
      /**
-      * This function lunch the engine for a game.
+      * This function launch the engine for a game.
       */
-     void lunchEngine();
-
-
-
+     void launchEngine();
 };
 
 
