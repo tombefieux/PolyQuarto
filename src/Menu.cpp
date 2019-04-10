@@ -45,9 +45,6 @@ void Menu::handleLeftClick(int const& x, int const& y)
                 if(player2 != nullptr)
                     delete player2;
                 player2 = new Player("Joueur 2");
-
-                // TEMP
-                launchEngine();
             }
 
             else if(this->onePlayerButton->isClickedOnIt(x, y))
@@ -89,9 +86,9 @@ void Menu::handleLeftClick(int const& x, int const& y)
 
         case Shape:
 
+            // TODO: shape selection
 
-
-            // launchEngine();
+            launchEngine();
             break;
     }
 }

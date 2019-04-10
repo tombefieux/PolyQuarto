@@ -6,16 +6,14 @@
 #include <string>
 
 #include "Config.h"
+#include "Clickable.h"
 
 /**
  * This class represents a button.
  */
-class Button {
+class Button: public Clickable {
 
 private:
-    int x;                               /** The x position of the button. */
-    int y;                               /** The y position of the button. */
-
     // graphics
     sf::Texture background;              /** The background image sprite. */
     sf::Text text;                       /** The text of the button. */
@@ -29,14 +27,6 @@ public:
     * @param window: the window
     */
     void render(sf::RenderWindow &window) const;
-
-    /**
-     * This fucntion returns if the coordinate of the mouse's click is on the button.
-     * @param x: x coordinate of the click
-     * @param y: y coordinate of the click
-     * @return if the coordinate of the mouse's click is on the button.
-     */
-    bool isClickedOnIt(int const& x, int const& y) const;
 
 };
 

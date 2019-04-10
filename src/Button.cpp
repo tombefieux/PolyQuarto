@@ -1,9 +1,7 @@
 #include "../include/Button.h"
 
-Button::Button(int const& x, int const& y, string const& label)
+Button::Button(int const& x, int const& y, string const& label): Clickable(x, y, BUTTON_WIDTH, BUTTON_HEIGHT)
 {
-    this->x = x;
-    this->y = y;
     this->background.loadFromFile(IMAGES_PATH + "button.png");
 
     // build the text
@@ -26,12 +24,4 @@ void Button::render(sf::RenderWindow &window) const
     window.draw(sprite);
 
     window.draw(text);
-}
-
-bool Button::isClickedOnIt(int const& x, int const& y) const
-{
-    return (
-            x >= this->x && x <= this->x + BUTTON_WIDTH &&
-            y >= this->y && y <= this->y + BUTTON_HEIGHT
-            );
 }
