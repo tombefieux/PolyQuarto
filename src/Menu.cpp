@@ -10,11 +10,19 @@ Menu::Menu(GameEngine* engine)
 
     this->returnToNumber = new Button(20, 20, "Retour");
 
-    this->onePlayerButton = new Button(BUTTON_X, 200, "Un joueur");
-    this->twoPlayersButton = new Button(BUTTON_X, 280, "Deux joueurs");
+    this->onePlayerButton = new Button(BUTTON_X, BUTTON_Y, "Un joueur");
+    this->twoPlayersButton = new Button(BUTTON_X, BUTTON_Y + 80, "Deux joueurs");
 
-    this->easyButton = new Button(BUTTON_X, 200, "Facile");
-    this->hardButton = new Button(BUTTON_X, 280, "Difficile");
+    this->easyButton = new Button(BUTTON_X, BUTTON_Y, "Facile");
+    this->hardButton = new Button(BUTTON_X, BUTTON_Y + 80, "Difficile");
+
+    this->shapeButtons = new ImageButton*[7];
+    for(int i = 0; i < 7; i++)
+    {
+        sf::Texture* texture = new sf::Texture();
+        texture->loadFromFile(SHAPES_PATH + "shape" + std::to_string(i + 1) + ".png");
+        this->shapeButtons[i] = new ImageButton(120 + (i * IMAGE_BUTTON_WIDTH) + (i * 20) - ((i / 4) * ((4 * IMAGE_BUTTON_WIDTH) + 40)), BUTTON_Y - 20 + ((i / 4) * (IMAGE_BUTTON_HEIGHT + 20)), texture);
+    }
 
     this->background.loadFromFile(IMAGES_PATH + "menuBackground.png");
 }
@@ -26,6 +34,13 @@ Menu::~Menu()
 
     delete onePlayerButton;
     delete twoPlayersButton;
+
+    delete returnToNumber;
+
+    delete easyButton;
+    delete hardButton;
+
+    delete[] shapeButtons;
 }
 
 void Menu::handleLeftClick(int const& x, int const& y)
@@ -85,10 +100,16 @@ void Menu::handleLeftClick(int const& x, int const& y)
             break;
 
         case Shape:
+            if(this->returnToNumber->isClickedOnIt(x, y))
+                this->currentMenuType = MenuType::PlayerNumber;
+            else
+            {
+                for(int i = 0; i < 7; i++)
+                    if(this->shapeButtons[i]->isClickedOnIt(x, y))
+                        this->selectedShape = (ShapeName) i;
 
-            // TODO: shape selection
-
-            launchEngine();
+                launchEngine();
+            }
             break;
     }
 }
@@ -131,7 +152,10 @@ void Menu::drawDifficulty(sf::RenderWindow &window) const
 
 void Menu::drawShape(sf::RenderWindow &window) const
 {
+    for(int i = 0; i < 7; i++)
+        this->shapeButtons[i]->render(window);
 
+    this->returnToNumber->render(window);
 }
 
 void Menu::launchEngine()

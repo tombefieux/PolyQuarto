@@ -15,6 +15,7 @@ const int WINDOW_HEIGHT = 480;
 const int FPS = 30;
 
 const string IMAGES_PATH = "assets/images/";
+const string SHAPES_PATH = IMAGES_PATH + "shapes/";
 const string FONT_PATH = "assets/font/";
 
 const int GRID_SIZE = 4;
@@ -30,10 +31,11 @@ const int SPACE_BETWEEN_PAWN = 32;
 
 const int BUTTON_WIDTH = 200;
 const int BUTTON_HEIGHT = 40;
-const int IMAGE_BUTTON_WIDTH = 200;
-const int IMAGE_BUTTON_HEIGHT = 200;
+const int IMAGE_BUTTON_WIDTH = 110;
+const int IMAGE_BUTTON_HEIGHT = 110;
 
 const int BUTTON_X = 260;
+const int BUTTON_Y = 200;
 
 enum ShapeName {Line = 0, LeftL = 1, RightL = 2, Square = 3, LeftZ = 4, RightZ = 5, Invaders = 6};
 

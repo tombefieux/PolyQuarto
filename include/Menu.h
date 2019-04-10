@@ -3,6 +3,7 @@
 
 #include "GameEngine.h"
 #include "Button.h"
+#include "ImageButton.h"
 
 /**
  * Enum for the menu
@@ -31,6 +32,9 @@ private:
     // for difficulty menu
     Button* easyButton;                  /** Button to select easy difficulty. */
     Button* hardButton;                  /** Button to select hard difficulty. */
+
+    // for shape menu
+    ImageButton** shapeButtons;       /** The shape buttons. */
 
 
     // graphics
