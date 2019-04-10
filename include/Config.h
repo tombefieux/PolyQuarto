@@ -30,6 +30,8 @@ const int SPACE_BETWEEN_PAWN = 32;
 
 const int BUTTON_WIDTH = 200;
 const int BUTTON_HEIGHT = 40;
+const int IMAGE_BUTTON_WIDTH = 200;
+const int IMAGE_BUTTON_HEIGHT = 200;
 
 const int BUTTON_X = 260;
 
