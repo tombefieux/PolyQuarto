@@ -59,12 +59,12 @@ vector<vector<vector<int>>> Shape::getPossibleCoordinatesToCheck(int const& i, i
     vector<vector<vector<int>>> result;
 
     // for each shape
-    for (int a = 0; a < allPossibilities.size(); a++)
+    for (unsigned int a = 0; a < allPossibilities.size(); a++)
     {
         // see if the i j coordinates are in the shape
         bool contained = false;
         // for each coordinate of the shape
-        for (int b = 0; b < allPossibilities[a].size() && !contained; b++)
+        for (unsigned int b = 0; b < allPossibilities[a].size() && !contained; b++)
             if(allPossibilities[a][b][0] == i && allPossibilities[a][b][1] == j)
                 contained = true;
 
@@ -89,18 +89,18 @@ vector<vector<vector<int>>> Shape::getAllPossibleCoordinatesInGrid() const
 
         // add to the result
         // for each possible coordinates
-        for (int j = 0; j < possibleCoordinates.size(); j++)
+        for (unsigned int j = 0; j < possibleCoordinates.size(); j++)
         {
             // if already doesn't exist
             bool exist = false;
 
             // for each coordinates already in result
-            for (int a = 0; a < result.size() && !exist; a++)
+            for (unsigned int a = 0; a < result.size() && !exist; a++)
             {
                 bool same = true;
 
                 // for each coordinates
-                for (int b = 0; b < result[a].size() && same; b++)
+                for (unsigned int b = 0; b < result[a].size() && same; b++)
                     if(result[a][b][0] != possibleCoordinates[j][b][0] || result[a][b][1] != possibleCoordinates[j][b][1])
                         same = false;
 

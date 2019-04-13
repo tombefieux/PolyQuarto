@@ -4,6 +4,7 @@
 #include "GameEngine.h"
 #include "Button.h"
 #include "ImageButton.h"
+#include "AI.h"
 
 /**
  * Enum for the menu

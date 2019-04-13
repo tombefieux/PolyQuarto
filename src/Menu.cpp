@@ -1,4 +1,5 @@
 #include "../include/Menu.h"
+#include "../include/AI.h"
 
 Menu::Menu(GameEngine* engine)
 {
@@ -81,7 +82,12 @@ void Menu::handleLeftClick(int const& x, int const& y)
                 // TODO: change for IA
                 if(player2 != nullptr)
                     delete player2;
-                player2 = new Player("IA");
+
+                this->engine->setOnePlayer(true);
+                /*
+                AI ai = AI("IA", 2);
+                player2 = &ai;
+                */
             }
 
             else if(this->hardButton->isClickedOnIt(x, y))
@@ -91,7 +97,12 @@ void Menu::handleLeftClick(int const& x, int const& y)
                 // TODO: change for IA
                 if(player2 != nullptr)
                     delete player2;
-                player2 = new Player("IA");
+
+                this->engine->setOnePlayer(true);
+                /*
+                AI ai = AI("IA", 4);
+                player2 = &ai;
+                */
             }
 
             else if(this->returnToNumber->isClickedOnIt(x, y))

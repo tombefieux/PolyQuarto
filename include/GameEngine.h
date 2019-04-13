@@ -7,10 +7,12 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "AI.h"
 #include "Pawn.h"
 #include "Player.h"
 #include "Shape.h"
 #include "Config.h"
+
 
 class GameEngine
 {
@@ -24,6 +26,7 @@ private:
     Shape* shape;                       /** The shape to play with. */
     bool engineIsRunning = false;       /** If the engine is running or not. */
     bool gameIsRunning = false;         /** If the game is running or not. */
+    bool onePlayer;
 
     // graphics
     sf::Texture background;              /** The background image sprite. */
@@ -54,6 +57,11 @@ public:
      * @return if the game is won with this pawn
      */
     bool isWon(int const& i, int const& j) const;
+
+    void AI(int depth);
+    int Min(vector<vector<Pawn*>>, vector<Pawn*> &copyAvailablePawns, int &depth);
+    int Max(vector<vector<Pawn*>>, vector<Pawn*> &copyAvailablePawns, int &depth);
+    int evaluateGrid(vector<vector<Pawn*>> &grid) const;
 
     /**
      * This function adds a pawn in the grid (the selected one).
@@ -96,6 +104,9 @@ public:
     */
     bool getGameIsRunning() const;
 
+    bool getOnePlayer() const;
+
+    void setOnePlayer(bool);
 
 private:
 

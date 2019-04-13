@@ -8,13 +8,16 @@ using namespace std;
 
 class Player
 {
-    private:
+    protected:
         string name;
 
     public:
         Player(){};
         Player(string);
         ~Player(){};
+
+        string getName() const;
+        string getType() const;
 
 };
 
