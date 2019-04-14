@@ -76,7 +76,7 @@ public:
      * @param line: the line of the last played pawn
      * @param col: the column of the last played pawn
      */
-    int min(vector<Pawn*> const& copyAvailablePawns, int depth, int const& line, int const& col);
+    int min(int depth, int const& line, int const& col);
 
     /**
      * This function tests every playable Pawns contained in the given vector at every possible location in the grid.
@@ -88,7 +88,7 @@ public:
      * @param line: the line of the last played pawn
      * @param col: the column of the last played pawn
      */
-    int max(vector<Pawn*> const& copyAvailablePawns, int depth, int const& line, int const& col);
+    int max(int depth, int const& line, int const& col);
 
     /**
      * This function evaluates the grid depending of a pawn at (line, col) coordinates.

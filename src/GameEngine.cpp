@@ -90,7 +90,6 @@ void GameEngine::playAI(int const& depth)
     int maxVal = -999999;
     int xBestPlay = -1;
     int yBestPlay = -1;
-    vector<Pawn*> copyAvailablePawn;
 
     // for each position in the grid
     for(unsigned int k = 0; k < this->grid.size(); k++)
@@ -99,23 +98,18 @@ void GameEngine::playAI(int const& depth)
         {
             cout << "For a position" << endl;
 
-            // copy the available pawns
-            copyAvailablePawn.clear();
-            for(unsigned int t = 0; t < this->availablePawn.size(); t++)
-                if(this->availablePawn[t] != nullptr)
-                    copyAvailablePawn.push_back(this->availablePawn[t]);
-
             int value = maxVal;
             if(isPlayable(k, l))
             {
                 this->grid[k][l] = selectedPawn;
-
+                selectedPawn->setPlayable(false);
                 if(isWon(k, l))
                     value = 999999;
                 else
-                    value = min(copyAvailablePawn, depth, k, l);
+                    value = min(depth, k, l);
 
                 this->grid[k][l] = nullptr;
+                selectedPawn->setPlayable(true);
             }
 
             if(value > maxVal)
@@ -129,101 +123,107 @@ void GameEngine::playAI(int const& depth)
 
     if(xBestPlay != -1) addPawn(xBestPlay, yBestPlay);
 
-    // TODO: select the pawn to play for the player
+    // selects the Pawn the human player will have to play
+    // random process to save time
+    if(this->gameIsRunning)
+    {
+        int r;
+        do
+        {
+            r = rand()%(16);
+        }
+        while(this->availablePawn[r] == nullptr || !this->availablePawn[r]->getPlayable());
+
+        selectPawn(r);
+        cout<<r<<endl;
+    }
 }
 
-int GameEngine::min(vector<Pawn*> const& copyPawns, int depth, int const& line, int const& col)
+int GameEngine::min(int depth, int const& line, int const& col)
 {
     int minVal = 9999999;
 
-    // stores a copy of the list of playable Pawns that can be worked on and modified in called function max
-    vector<Pawn*> copyAvailablePawns;
-
-    if(depth == 0 || copyPawns.size() == 0)
+    if(depth == 0 || this->availablePawn.size() == 0)
         return evaluateGrid(grid, line, col);
 
     // test every playable Pawn
-    for(unsigned int i = 0; i < copyPawns.size(); i++)
+    for(unsigned int i = 0; i < this->availablePawn.size(); i++)
     {
-        // at every playable position
-        for(unsigned int k = 0; k <grid.size(); k++)
+        if(this->availablePawn[i] != nullptr && this->availablePawn[i]->getPlayable())
         {
-            for(unsigned int l = 0; l < grid.size(); l++)
+            // at every playable position
+            for(unsigned int k = 0; k <grid.size(); k++)
             {
-                int value = minVal;
-
-                if(isPlayable(k, l))
+                for(unsigned int l = 0; l < grid.size(); l++)
                 {
-                    // change grid
-                    this->grid[k][l] = copyPawns[i];
 
-                    // new copy of available pawns
-                    copyAvailablePawns.clear();
-                    for(unsigned int t = 0; t < copyPawns.size(); t++)
-                        if(copyPawns[t] != copyPawns[i])
-                            copyAvailablePawns.push_back(copyPawns[t]);
+                        int value = minVal;
 
-                    // get the value
-                    if(isWon(k, l))
-                        value = 999999;
-                    else
-                        value = max(copyAvailablePawns, depth - 1, k, l);
+                        if(isPlayable(k, l))
+                        {
+                            // change grid
+                            this->grid[k][l] = this->availablePawn[i];
+                            this->availablePawn[i]->setPlayable(false);
 
-                    // grid as origin
-                    this->grid[k][l] = nullptr;
+                            // get the value
+                            if(isWon(k, l))
+                                value = 999999;
+                            else
+                                value = max(depth - 1, k, l);
+
+                            // grid as origin
+                            this->grid[k][l] = nullptr;
+                            this->availablePawn[i]->setPlayable(true);
+                        }
+
+                        if(value < minVal)
+                            minVal = value;
+                    }
                 }
-
-                if(value < minVal)
-                    minVal = value;
             }
-        }
     }
 
     return minVal;
 }
 
-int GameEngine::max(vector<Pawn*> const& copyPawns, int depth, int const& line, int const& col)
+int GameEngine::max(int depth, int const& line, int const& col)
 {
     int maxVal = -9999999;
 
-    // stores a copy of the list of playable Pawns that can be worked on and modified in called function min
-    vector<Pawn*> copyAvailablePawns;
-
-    if(depth == 0 || copyPawns.size() == 0)
+    if(depth == 0 || this->availablePawn.size() == 0)
         return evaluateGrid(grid, line, col);
 
     // test every playable Pawn
-    for(unsigned int i = 0; i<copyPawns.size(); i++)
+    for(unsigned int i = 0; i<this->availablePawn.size(); i++)
     {
-        //at every playable position
-        for(unsigned int k = 0; k<grid.size(); k++)
+        if(this->availablePawn[i] != nullptr && this->availablePawn[i]->getPlayable())
         {
-            for(unsigned int l = 0; l<grid.size(); l++)
+            //at every playable position
+            for(unsigned int k = 0; k<grid.size(); k++)
             {
-                int value = maxVal;
-
-                if(isPlayable(k, l))
+                for(unsigned int l = 0; l<grid.size(); l++)
                 {
-                    // change grid
-                    this->grid[k][l] = copyPawns[i];
+                    int value = maxVal;
 
-                    // new copy of available pawns
-                    copyAvailablePawns.clear();
-                    for(unsigned int t = 0; t<copyPawns.size(); t++)
-                        if(copyPawns[t] != copyPawns[i])
-                            copyAvailablePawns.push_back(copyPawns[t]);
+                    if(isPlayable(k, l))
+                    {
+                        // change grid
+                        this->grid[k][l] = this->availablePawn[i];
+                        this->availablePawn[i]->setPlayable(false);
 
-                    if(isWon(k, l))
-                        value = -999999;
-                    else
-                        value = min(copyAvailablePawns, depth - 1, k, l);
+                        if(isWon(k, l))
+                            value = -999999;
+                        else
+                            value = min(depth - 1, k, l);
 
-                    // grid as origin
-                    this->grid[k][l] = nullptr;
+                        // grid as origin
+                        this->grid[k][l] = nullptr;
+                        this->availablePawn[i]->setPlayable(true);
+                    }
+
+                    if(value > maxVal)
+                        maxVal = value;
                 }
-
-                if(value > maxVal)
-                    maxVal = value;
             }
         }
     }
@@ -321,7 +321,7 @@ void GameEngine::selectPawn(int const& i)
         availablePawn[i] = nullptr;
         isPlayer1Turn = !isPlayer1Turn;
         if(!isPlayer1Turn && this->onePlayer)
-            playAI(2);
+            playAI(1);
     }
 }
 

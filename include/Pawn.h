@@ -14,7 +14,7 @@ using namespace std;
 class Pawn
 {
 private:
-    bool bright, small, square, hollow;
+    bool bright, small, square, hollow, playable;
 
     // graphics
     sf::Texture texture;           /** The texture of the pawn. */
@@ -27,6 +27,8 @@ public:
     vector<bool> inCommon(Pawn*);
     void inCommon(vector<bool>&, const vector<bool>&);
     vector<bool> getPoints();
+    bool getPlayable() const;
+    void setPlayable(bool);
 
     /**
     * Getter of the texture of the pawn.

@@ -10,6 +10,7 @@ Pawn::Pawn(bool bright, bool small, bool square, bool hollow)
     this->small = small;
     this->square = square;
     this->hollow = hollow;
+    this->playable = true;
 
     loadTextureFromAttributes();
 }
@@ -18,6 +19,18 @@ Pawn::~Pawn()
 {
 
 }
+
+bool Pawn::getPlayable() const
+{
+    return this->playable;
+}
+
+
+void Pawn::setPlayable(bool p)
+{
+    this->playable = p;
+}
+
 
 vector<bool> Pawn::inCommon(Pawn * p)
 {
