@@ -7,7 +7,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "AI.h"
 #include "Pawn.h"
 #include "Player.h"
 #include "Shape.h"

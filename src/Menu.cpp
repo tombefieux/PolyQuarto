@@ -1,5 +1,4 @@
 #include "../include/Menu.h"
-#include "../include/AI.h"
 
 Menu::Menu(GameEngine* engine)
 {

@@ -96,8 +96,6 @@ void GameEngine::playAI(int const& depth)
     {
         for(unsigned int l = 0; l < this->grid.size(); l++)
         {
-            cout << "For a position" << endl;
-
             int value = maxVal;
             if(isPlayable(k, l))
             {
