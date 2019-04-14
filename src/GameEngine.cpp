@@ -129,7 +129,8 @@ void GameEngine::playAI(int const& depth)
                 if(isWon(k, l))
                     value = 999999;
                 else
-                    value = min(depth, k, l);
+                    //value = min(depth, k, l);
+                    value = MINIMAX_AB(depth, k, l, -2000, 2000);
 
                 this->grid[k][l] = nullptr;
                 selectedPawn->setPlayable(true);
@@ -252,6 +253,104 @@ int GameEngine::max(int depth, int const& line, int const& col)
 
     return maxVal;
 }
+
+
+
+
+
+int GameEngine::MINIMAX_AB(int depth, int const& line, int const& col, int const &A, int const&B)
+{
+    if(depth == 0 || this->availablePawn.size() == 0)
+        return evaluateGrid(grid, line, col);
+
+
+    int alpha = A;
+    int beta = B;
+    if(depth%2 == 0)
+    {
+        // test every playable Pawn
+        for(unsigned int i = 0; i<this->availablePawn.size(); i++)
+        {
+            if(this->availablePawn[i] != nullptr && this->availablePawn[i]->getPlayable())
+            {
+                //at every playable position
+                for(unsigned int k = 0; k<grid.size(); k++)
+                {
+                    for(unsigned int l = 0; l<grid.size(); l++)
+                    {
+                        int value;
+                        if(isPlayable(k, l))
+                        {
+                            // change grid
+                            this->grid[k][l] = this->availablePawn[i];
+                            this->availablePawn[i]->setPlayable(false);
+
+                            if(isWon(k, l))
+                                value = -999999;
+                            else
+                                value = MINIMAX_AB(depth - 1, k, l, A, B);
+
+                            // grid as origin
+                            this->grid[k][l] = nullptr;
+                            this->availablePawn[i]->setPlayable(true);
+
+                            if(value<beta)
+                                beta = value;
+                            if(alpha>=beta)
+                                return alpha;
+                        }
+                    }
+                }
+            }
+        }
+        return beta;
+    }
+    else
+    {
+        // test every playable Pawn
+        for(unsigned int i = 0; i<this->availablePawn.size(); i++)
+        {
+            if(this->availablePawn[i] != nullptr && this->availablePawn[i]->getPlayable())
+            {
+                //at every playable position
+                for(unsigned int k = 0; k<grid.size(); k++)
+                {
+                    for(unsigned int l = 0; l<grid.size(); l++)
+                    {
+                        int value;
+                        if(isPlayable(k, l))
+                        {
+                            // change grid
+                            this->grid[k][l] = this->availablePawn[i];
+                            this->availablePawn[i]->setPlayable(false);
+
+                            if(isWon(k, l))
+                                value = -999999;
+                            else
+                                value = MINIMAX_AB(depth - 1, k, l, A, B);
+
+                            // grid as origin
+                            this->grid[k][l] = nullptr;
+                            this->availablePawn[i]->setPlayable(true);
+
+                            if(value>alpha)
+                                alpha = value;
+                            if(alpha>=beta)
+                                return beta;
+                        }
+                    }
+                }
+            }
+        }
+        return alpha;
+    }
+}
+
+
+
+
+
+
 
 int GameEngine::evaluateGrid(vector<vector<Pawn*>> const& grid, int const& line, int const& col) const
 {
