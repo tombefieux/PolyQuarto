@@ -33,12 +33,12 @@ private:
 
 public:
     /**
-     * THe constructor.
+     * The constructor.
      */
     GameEngine();
 
     /**
-     * Te destructor.
+     * The destructor.
      */
     ~GameEngine();
 
@@ -58,8 +58,36 @@ public:
      */
     bool isWon(int const& i, int const& j) const;
 
+
+    /**
+     * This function decides where to play for the AI to win.
+     * Part of the MinMax algorithm.
+     * @param depth: the higher it is, the better the AI will be. Number of consecutive plays the program tests.
+     */
     void playAI(int const& depth);
+
+    /**
+     * This function tests every playable Pawns contained in the given vector at every possible location in the grid.
+     * It returns the "value" of a play by examining and comparing each following play by calling the method max(...).
+     * If the depth is 0, it evaluates the grid and returns the value
+     * Part of the MinMax algorithm.
+     * @param copyAvailablePawns: the list of playable Pawns
+     * @param depth: enables the program to know if it has to evaluate the grid or call min(...)
+     * @param line: the line of the last played pawn
+     * @param col: the column of the last played pawn
+     */
     int min(vector<Pawn*> const& copyAvailablePawns, int depth, int const& line, int const& col);
+
+    /**
+     * This function tests every playable Pawns contained in the given vector at every possible location in the grid.
+     * It returns the "value" of a play by examining and comparing each following play by calling the method min(...).
+     * If the depth is 0, it evaluates the grid and returns the value
+     * Part of the MinMax algorithm.
+     * @param copyAvailablePawns: the list of playable Pawns
+     * @param depth: enables the program to know if it has to evaluate the grid or call min(...)
+     * @param line: the line of the last played pawn
+     * @param col: the column of the last played pawn
+     */
     int max(vector<Pawn*> const& copyAvailablePawns, int depth, int const& line, int const& col);
 
     /**
