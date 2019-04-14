@@ -71,6 +71,17 @@ public:
     void playAI(int const& depth);
 
     /**
+     * This function has the same effect as playAI().
+     * While being based on the MinMax algorithm, it uses the alpha beta pruning.
+     * @param depth: the higher it is, the better the AI will be. Number of consecutive plays the program tests.
+     * @param line: the line of the last played pawn
+     * @param col: the column of the last played pawn
+     * @param A: used to store the alpha value
+     * @param B: used to store the beta value
+     */
+    int MINIMAX_AB(int depth, int const& line, int const& col, int const &A, int const&B);
+
+    /**
      * This function tests every playable Pawns contained in the given vector at every possible location in the grid.
      * It returns the "value" of a play by examining and comparing each following play by calling the method max(...).
      * If the depth is 0, it evaluates the grid and returns the value
