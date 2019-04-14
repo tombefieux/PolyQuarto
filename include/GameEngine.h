@@ -11,7 +11,7 @@
 #include "Player.h"
 #include "Shape.h"
 #include "Config.h"
-
+#include "Button.h"
 
 class GameEngine
 {
@@ -30,6 +30,10 @@ private:
 
     // graphics
     sf::Texture background;              /** The background image sprite. */
+    sf::Text text;                       /** The text of the game. */
+    sf::Font font;                       /** The font of the text. */
+    Button* quitButton;                  /** The button to quit. */
+    sf::Texture* shapeTexture = nullptr; /** The texture of the shape. */
 
 public:
     /**

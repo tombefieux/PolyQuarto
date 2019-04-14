@@ -10,7 +10,7 @@ using namespace std;
 */
 
 const int WINDOW_WIDTH = 720;
-const int WINDOW_HEIGHT = 480;
+const int WINDOW_HEIGHT = 580;
 
 const int FPS = 30;
 

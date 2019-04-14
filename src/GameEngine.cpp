@@ -10,6 +10,15 @@ GameEngine::GameEngine()
     this->selectedPawn = nullptr;
     for(int i = 0; i<4; i++) this->grid[i].resize(4);
 
+    // build the text
+    font.loadFromFile(FONT_PATH + "SF_Atarian_System.ttf");
+    text.setFont(font);
+    text.setCharacterSize(26);
+    text.setColor(sf::Color(87, 49, 46));
+    text.setPosition(20, 510);
+
+    this->quitButton = new Button(500, 510, "Quitter");
+
     loadImages();
 }
 
@@ -29,14 +38,25 @@ void GameEngine::start(Player* player2, Player* player1, ShapeName const& shapeN
     this->engineIsRunning = true;
     this->gameIsRunning = true;
 
-    if(AIdif != 0) {
+    if(AIdif != 0)
+    {
         this->onePlayer = true;
         this->AIdif = AIdif;
+    }
+    else
+    {
+        this->onePlayer = false;
+        this->AIdif = 0;
     }
 
     loadAvailablePawns();
 
-    cout << "Sélectionnez une pièce pour votre adversaire" << endl;
+    if(shapeTexture != nullptr)
+        delete shapeTexture;
+    shapeTexture = new sf::Texture();
+    shapeTexture->loadFromFile(SHAPES_PATH + "shape" + std::to_string((int) shapeName + 1) + ".png");
+
+    text.setString("Selectionnez le pion de l'adverssaire");
 }
 
 bool GameEngine::isPlayable(int const& i, int const& j) const
@@ -295,16 +315,24 @@ void GameEngine::addPawn(int const& i, int const& j)
             // if won
             if(isWon(i, j))
             {
-                cout << "Nice you have won!" << endl;
+                if(this->isPlayer1Turn)
+                    text.setString("Partie gagnee par Joueur 1");
+                else if (!this->onePlayer)
+                    text.setString("Partie gagnee par Joueur 2");
+                else
+                    text.setString("Partie gagnee par l'IA");
+
                 this->gameIsRunning = false;
             }
             else
-                cout << "Sélectionnez une pièce pour votre adversaire" << endl;
+            {
+                if(!this->onePlayer)
+                    text.setString("Selectionnez le pion de l'adverssaire");
+                else
+                    text.setString("L'IA calcul...");
+            }
         }
-        else cout<<"Impossible" << endl;
     }
-    else cout<<"MDR t'es con !" << endl;
-
 }
 
 Player* GameEngine::getCurrentPlayer()
@@ -441,6 +469,15 @@ void GameEngine::render(sf::RenderWindow &window) const
 
         window.draw(temp);
     }
+
+    // render bottom
+    window.draw(text);
+    this->quitButton->render(window);
+
+    sf::Sprite temp;
+    temp.setPosition(360, 475);
+    temp.setTexture(*this->shapeTexture);
+    window.draw(temp);
 }
 
 void GameEngine::handleLeftClick(int const& x, int const& y)
@@ -463,6 +500,8 @@ void GameEngine::handleLeftClick(int const& x, int const& y)
             selectPawn(pawnIndexWithClick);
     }
 
+    if(this->quitButton->isClickedOnIt(x, y))
+        endEngine();
 }
 
 bool GameEngine::getEngineIsRunning() const
@@ -479,4 +518,9 @@ void GameEngine::endEngine()
 {
     this->gameIsRunning = false;
     this->engineIsRunning = false;
+
+    this->grid.clear();
+    this->grid.resize(4);
+    this->selectedPawn = nullptr;
+    for(int i = 0; i<4; i++) this->grid[i].resize(4);
 }
