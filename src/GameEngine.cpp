@@ -21,13 +21,18 @@ GameEngine::~GameEngine()
     clearGrid();
 }
 
-void GameEngine::start(Player* player2, Player* player1, ShapeName const& shapeName)
+void GameEngine::start(Player* player2, Player* player1, ShapeName const& shapeName, int const& AIdif)
 {
     this->player1 = player1;
     this->player2 = player2;
     this->shape = new Shape(shapeName);
     this->engineIsRunning = true;
     this->gameIsRunning = true;
+
+    if(AIdif != 0) {
+        this->onePlayer = true;
+        this->AIdif = AIdif;
+    }
 
     loadAvailablePawns();
 
@@ -133,7 +138,6 @@ void GameEngine::playAI(int const& depth)
         while(this->availablePawn[r] == nullptr || !this->availablePawn[r]->getPlayable());
 
         selectPawn(r);
-        cout<<r<<endl;
     }
 }
 
@@ -319,7 +323,7 @@ void GameEngine::selectPawn(int const& i)
         availablePawn[i] = nullptr;
         isPlayer1Turn = !isPlayer1Turn;
         if(!isPlayer1Turn && this->onePlayer)
-            playAI(1);
+            playAI(this->AIdif);
     }
 }
 
@@ -469,16 +473,6 @@ bool GameEngine::getEngineIsRunning() const
 bool GameEngine::getGameIsRunning() const
 {
     return this->gameIsRunning;
-}
-
-bool GameEngine::getOnePlayer() const
-{
-    return onePlayer;
-}
-
-void GameEngine::setOnePlayer(bool b)
-{
-    onePlayer = b;
 }
 
 void GameEngine::endEngine()

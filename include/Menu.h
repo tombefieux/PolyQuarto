@@ -22,6 +22,7 @@ private:
     ShapeName selectedShape;            /** The selected shape. */
     MenuType currentMenuType;           /** Te current type of menu. */
     bool onePlayer;                     /** If the player want to play alone. */
+    int difficulty;                     /** Te difficulty of the AI. */
 
     Button* returnToNumber;              /** Button to return to the main menu. */
 

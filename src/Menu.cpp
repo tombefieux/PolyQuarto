@@ -78,30 +78,22 @@ void Menu::handleLeftClick(int const& x, int const& y)
             {
                 this->currentMenuType = MenuType::Shape;
 
-                // TODO: change for IA
                 if(player2 != nullptr)
                     delete player2;
 
-                this->engine->setOnePlayer(true);
-                /*
-                AI ai = AI("IA", 2);
-                player2 = &ai;
-                */
+                player2 = nullptr;
+                difficulty = 1;
             }
 
             else if(this->hardButton->isClickedOnIt(x, y))
             {
                 this->currentMenuType = MenuType::Shape;
 
-                // TODO: change for IA
                 if(player2 != nullptr)
                     delete player2;
 
-                this->engine->setOnePlayer(true);
-                /*
-                AI ai = AI("IA", 4);
-                player2 = &ai;
-                */
+                player2 = nullptr;
+                difficulty = 2;
             }
 
             else if(this->returnToNumber->isClickedOnIt(x, y))
@@ -174,6 +166,11 @@ void Menu::drawShape(sf::RenderWindow &window) const
 
 void Menu::launchEngine()
 {
-    this->engine->start(this->player1, this->player2, this->selectedShape);
+    // if AI
+    if(player2 == nullptr)
+        this->engine->start(this->player1, this->player2, this->selectedShape, difficulty);
+    else
+        this->engine->start(this->player1, this->player2, this->selectedShape);
+
     this->currentMenuType = MenuType::PlayerNumber;
 }

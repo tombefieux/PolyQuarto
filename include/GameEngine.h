@@ -25,7 +25,8 @@ private:
     Shape* shape;                       /** The shape to play with. */
     bool engineIsRunning = false;       /** If the engine is running or not. */
     bool gameIsRunning = false;         /** If the game is running or not. */
-    bool onePlayer;
+    bool onePlayer;                     /** If there's only one player. */
+    int AIdif;                          /** Te difficulty of the AI. */
 
     // graphics
     sf::Texture background;              /** The background image sprite. */
@@ -46,8 +47,9 @@ public:
      * @param player1: the first player
      * @param player2: the second player
      * @param shapeName: the name of the shape to play with
+     * @param AIdif: the difficulty of the AI
      */
-    void start(Player* player2, Player* player1, ShapeName const& shapeName);
+    void start(Player* player2, Player* player1, ShapeName const& shapeName, int const& AIdif = 0);
 
     /**
      * This function checks if the game is won with a pawn at one position.
@@ -56,7 +58,6 @@ public:
      * @return if the game is won with this pawn
      */
     bool isWon(int const& i, int const& j) const;
-
 
     /**
      * This function decides where to play for the AI to win.
@@ -141,10 +142,6 @@ public:
     * @return if the game is running or not.
     */
     bool getGameIsRunning() const;
-
-    bool getOnePlayer() const;
-
-    void setOnePlayer(bool);
 
 private:
 
