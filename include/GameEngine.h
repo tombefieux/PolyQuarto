@@ -59,8 +59,8 @@ public:
     bool isWon(int const& i, int const& j) const;
 
     void playAI(int const& depth);
-    int min(vector<vector<Pawn*>> const&, vector<Pawn*> &copyAvailablePawns, int depth, int const& line, int const& col);
-    int max(vector<vector<Pawn*>> const&, vector<Pawn*> &copyAvailablePawns, int depth, int const& line, int const& col);
+    int min(vector<Pawn*> const& copyAvailablePawns, int depth, int const& line, int const& col);
+    int max(vector<Pawn*> const& copyAvailablePawns, int depth, int const& line, int const& col);
 
     /**
      * This function evaluates the grid depending of a pawn at (line, col) coordinates.

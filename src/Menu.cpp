@@ -115,11 +115,15 @@ void Menu::handleLeftClick(int const& x, int const& y)
                 this->currentMenuType = MenuType::PlayerNumber;
             else
             {
-                for(int i = 0; i < 7; i++)
+                bool selected = false;
+                for(int i = 0; i < 7 && !selected; i++)
                     if(this->shapeButtons[i]->isClickedOnIt(x, y))
+                    {
                         this->selectedShape = (ShapeName) i;
+                        selected = true;
+                    }
 
-                launchEngine();
+                if(selected) launchEngine();
             }
             break;
     }

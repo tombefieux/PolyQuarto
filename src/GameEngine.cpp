@@ -97,12 +97,15 @@ void GameEngine::playAI(int const& depth)
     {
         for(unsigned int l = 0; l < this->grid.size(); l++)
         {
+            cout << "For a position" << endl;
+
             // copy the available pawns
             copyAvailablePawn.clear();
             for(unsigned int t = 0; t < this->availablePawn.size(); t++)
-                copyAvailablePawn.push_back(this->availablePawn[t]);
+                if(this->availablePawn[t] != nullptr)
+                    copyAvailablePawn.push_back(this->availablePawn[t]);
 
-            int value = -999999;
+            int value = maxVal;
             if(isPlayable(k, l))
             {
                 this->grid[k][l] = selectedPawn;
@@ -110,7 +113,7 @@ void GameEngine::playAI(int const& depth)
                 if(isWon(k, l))
                     value = 999999;
                 else
-                    value = min(this->grid, copyAvailablePawn, depth, k, l);
+                    value = min(copyAvailablePawn, depth, k, l);
 
                 this->grid[k][l] = nullptr;
             }
@@ -129,76 +132,67 @@ void GameEngine::playAI(int const& depth)
     // TODO: select the pawn to play for the player
 }
 
-int GameEngine::min(vector<vector<Pawn*>> const& grid, vector<Pawn*> &copyPawns, int depth, int const& line, int const& col)
+int GameEngine::min(vector<Pawn*> const& copyPawns, int depth, int const& line, int const& col)
 {
-    int value = 0;
     int minVal = 9999999;
 
-    //stores a copy of the list of playable Pawns that can be worked on and modified in called function max
+    // stores a copy of the list of playable Pawns that can be worked on and modified in called function max
     vector<Pawn*> copyAvailablePawns;
 
     if(depth == 0 || copyPawns.size() == 0)
-    {
-        cout<<"Evaluation de la grille dans min() "<<endl;
         return evaluateGrid(grid, line, col);
-    }
 
-    //test every playable Pawn
-    for(unsigned int i =0; i<copyPawns.size(); i++)
+    // test every playable Pawn
+    for(unsigned int i = 0; i < copyPawns.size(); i++)
     {
-        //at every playable position
-        for(unsigned int k = 0; k<grid.size(); k++)
+        // at every playable position
+        for(unsigned int k = 0; k <grid.size(); k++)
         {
-            for(unsigned int l = 0; l<grid.size(); l++)
+            for(unsigned int l = 0; l < grid.size(); l++)
             {
+                int value = minVal;
+
                 if(isPlayable(k, l))
                 {
+                    // change grid
                     this->grid[k][l] = copyPawns[i];
+
+                    // new copy of available pawns
                     copyAvailablePawns.clear();
-                    for(unsigned int t = 0; t<copyPawns.size(); t++)
-                    {
+                    for(unsigned int t = 0; t < copyPawns.size(); t++)
                         if(copyPawns[t] != copyPawns[i])
                             copyAvailablePawns.push_back(copyPawns[t]);
-                    }
 
-                    if(isWon(k,l))
+                    // get the value
+                    if(isWon(k, l))
                         value = 999999;
                     else
-                    {
-                        int d = depth-1;
-                        value = max(this->grid, copyAvailablePawns, d, line, col);
-                    }
+                        value = max(copyAvailablePawns, depth - 1, k, l);
+
+                    // grid as origin
+                    this->grid[k][l] = nullptr;
                 }
 
-                if(value<minVal)
-                {
+                if(value < minVal)
                     minVal = value;
-                }
-
-                this->grid[k][l] = nullptr;
             }
-
         }
     }
 
     return minVal;
 }
 
-int GameEngine::max(vector<vector<Pawn*>> const& grid, vector<Pawn*> &copyPawns, int depth, int const& line, int const& col)
+int GameEngine::max(vector<Pawn*> const& copyPawns, int depth, int const& line, int const& col)
 {
-    int value = 0;
     int maxVal = -9999999;
 
-    //stores a copy of the list of playable Pawns that can be worked on and modified in called function min
+    // stores a copy of the list of playable Pawns that can be worked on and modified in called function min
     vector<Pawn*> copyAvailablePawns;
 
     if(depth == 0 || copyPawns.size() == 0)
-    {
-        cout<<"Evaluation de la grille dans max() " << endl;
         return evaluateGrid(grid, line, col);
-    }
 
-    //test every playable Pawn
+    // test every playable Pawn
     for(unsigned int i = 0; i<copyPawns.size(); i++)
     {
         //at every playable position
@@ -206,33 +200,31 @@ int GameEngine::max(vector<vector<Pawn*>> const& grid, vector<Pawn*> &copyPawns,
         {
             for(unsigned int l = 0; l<grid.size(); l++)
             {
+                int value = maxVal;
+
                 if(isPlayable(k, l))
                 {
+                    // change grid
                     this->grid[k][l] = copyPawns[i];
+
+                    // new copy of available pawns
                     copyAvailablePawns.clear();
                     for(unsigned int t = 0; t<copyPawns.size(); t++)
-                    {
                         if(copyPawns[t] != copyPawns[i])
                             copyAvailablePawns.push_back(copyPawns[t]);
-                    }
 
-                    if(isWon(k,l))
+                    if(isWon(k, l))
                         value = -999999;
                     else
-                    {
-                        int d =depth-1;
-                        value = min(this->grid, copyAvailablePawns, d, line, col);
-                    }
+                        value = min(copyAvailablePawns, depth - 1, k, l);
+
+                    // grid as origin
+                    this->grid[k][l] = nullptr;
                 }
 
-                if(value>maxVal)
-                {
+                if(value > maxVal)
                     maxVal = value;
-                }
-
-                this->grid[k][l] = nullptr;
             }
-
         }
     }
 
@@ -285,7 +277,7 @@ int GameEngine::evaluateGrid(vector<vector<Pawn*>> const& grid, int const& line,
             result += pawnNbInShape * commonCharacteristics;
         }
     }
-    cout << result << endl;
+
     return result;
 }
 
