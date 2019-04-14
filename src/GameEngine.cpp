@@ -36,8 +36,7 @@ void GameEngine::start(Player* player2, Player* player1, ShapeName const& shapeN
 
 bool GameEngine::isPlayable(int const& i, int const& j) const
 {
-    if(grid[i][j] == nullptr) return true;
-    else return false;
+    return (grid[i][j] == nullptr);
 }
 
 void GameEngine::clearGrid()
@@ -86,73 +85,62 @@ bool GameEngine::isWon(int const& i, int const& j) const
     return false;
 }
 
-void GameEngine::AI(int depth)
+void GameEngine::playAI(int const& depth)
 {
     int maxVal = -999999;
-    int value = 0;
-    int xBestPlay =-1;
+    int xBestPlay = -1;
     int yBestPlay = -1;
     vector<Pawn*> copyAvailablePawn;
 
-
-    for(unsigned int k = 0; k<this->grid.size(); k++)
+    // for each position in the grid
+    for(unsigned int k = 0; k < this->grid.size(); k++)
     {
-        for(unsigned int l = 0; l<this->grid.size(); l++)
+        for(unsigned int l = 0; l < this->grid.size(); l++)
         {
+            // copy the available pawns
             copyAvailablePawn.clear();
-            for(unsigned int t = 0; t<this->availablePawn.size(); t++)
-            {
+            for(unsigned int t = 0; t < this->availablePawn.size(); t++)
                 copyAvailablePawn.push_back(this->availablePawn[t]);
-            }
+
+            int value = -999999;
             if(isPlayable(k, l))
             {
                 this->grid[k][l] = selectedPawn;
 
-                if(isWon(k,l))
+                if(isWon(k, l))
                     value = 999999;
                 else
-                {
-                    value = Min(this->grid, copyAvailablePawn, depth);
-                }
+                    value = min(this->grid, copyAvailablePawn, depth, k, l);
+
+                this->grid[k][l] = nullptr;
             }
 
-            if(value>maxVal)
+            if(value > maxVal)
             {
                 maxVal = value;
                 xBestPlay = k;
                 yBestPlay = l;
             }
-
-            this->grid[k][l] = nullptr;
         }
+    }
 
-    }
-/*    for(int e=0;e<this->grid.size();e++)
-    {
-        for(int r=0;r<this->grid.size();r++)
-        {
-            if(this->grid[e][r] == nullptr)
-               cout<<"VIDE ";
-            else cout<<"PAWN ";
-        }
-        cout<<endl;
-    }
-*/
-    //addPawn(xBestPlay, yBestPlay);
+    if(xBestPlay != -1) addPawn(xBestPlay, yBestPlay);
+
+    // TODO: select the pawn to play for the player
 }
 
-int GameEngine::Min(vector<vector<Pawn*>> grid, vector<Pawn*> &copyPawns, int &depth)
+int GameEngine::min(vector<vector<Pawn*>> const& grid, vector<Pawn*> &copyPawns, int depth, int const& line, int const& col)
 {
     int value = 0;
     int minVal = 9999999;
 
-    //stores a copy of the list of playable Pawns that can be worked on and modified in called function Max
+    //stores a copy of the list of playable Pawns that can be worked on and modified in called function max
     vector<Pawn*> copyAvailablePawns;
 
-    if(depth == 0 || copyPawns.size()==0)
+    if(depth == 0 || copyPawns.size() == 0)
     {
-        cout<<"Evaluation de la grille dans Min() "<<endl;
-        return evaluateGrid(grid);
+        cout<<"Evaluation de la grille dans min() "<<endl;
+        return evaluateGrid(grid, line, col);
     }
 
     //test every playable Pawn
@@ -178,7 +166,7 @@ int GameEngine::Min(vector<vector<Pawn*>> grid, vector<Pawn*> &copyPawns, int &d
                     else
                     {
                         int d = depth-1;
-                        value = Max(this->grid, copyAvailablePawns, d);
+                        value = max(this->grid, copyAvailablePawns, d, line, col);
                     }
                 }
 
@@ -192,25 +180,26 @@ int GameEngine::Min(vector<vector<Pawn*>> grid, vector<Pawn*> &copyPawns, int &d
 
         }
     }
+
     return minVal;
 }
 
-int GameEngine::Max(vector<vector<Pawn*>> grid, vector<Pawn*> &copyPawns, int &depth)
+int GameEngine::max(vector<vector<Pawn*>> const& grid, vector<Pawn*> &copyPawns, int depth, int const& line, int const& col)
 {
     int value = 0;
     int maxVal = -9999999;
 
-    //stores a copy of the list of playable Pawns that can be worked on and modified in called function Min
+    //stores a copy of the list of playable Pawns that can be worked on and modified in called function min
     vector<Pawn*> copyAvailablePawns;
 
-    if(depth == 0 || copyPawns.size()==0)
+    if(depth == 0 || copyPawns.size() == 0)
     {
-        cout<<"Evaluation de la grille dans Max() "<<endl;
-        return evaluateGrid(grid);
+        cout<<"Evaluation de la grille dans max() " << endl;
+        return evaluateGrid(grid, line, col);
     }
 
     //test every playable Pawn
-    for(unsigned int i =0; i<copyPawns.size(); i++)
+    for(unsigned int i = 0; i<copyPawns.size(); i++)
     {
         //at every playable position
         for(unsigned int k = 0; k<grid.size(); k++)
@@ -232,7 +221,7 @@ int GameEngine::Max(vector<vector<Pawn*>> grid, vector<Pawn*> &copyPawns, int &d
                     else
                     {
                         int d =depth-1;
-                        value = Min(this->grid, copyAvailablePawns, d);
+                        value = min(this->grid, copyAvailablePawns, d, line, col);
                     }
                 }
 
@@ -246,59 +235,58 @@ int GameEngine::Max(vector<vector<Pawn*>> grid, vector<Pawn*> &copyPawns, int &d
 
         }
     }
+
     return maxVal;
 }
 
-int GameEngine::evaluateGrid(vector<vector<Pawn*>> &grid) const
+int GameEngine::evaluateGrid(vector<vector<Pawn*>> const& grid, int const& line, int const& col) const
 {
-    int maxCount = 1;
-    for(unsigned int z=0; z<grid.size(); z++)
+    int result = 0;
+    if(grid[line][col] != nullptr)
     {
-        for (unsigned int e = 0; e<grid.size(); e++)
+        // get ALL the possibilities of shapes at this point for the shape of the game
+        vector<vector<vector<int>>> possibilitiesForLine = this->shape->getPossibleCoordinatesToCheck(line, col);
+
+        // for each shape possibility
+        for (unsigned int a = 0; a < possibilitiesForLine.size(); a++)
         {
-            if(grid[z][e] != nullptr)
+            int pawnNbInShape = 0;
+            int commonCharacteristics = 0;
+            bool stillOkForBright = true, stillOkForSmall = true, stillOkForSquare = true, stillOkForHollow = true;
+            Pawn* referencePawn = nullptr;
+
+            // for each pawn in the shape
+            for (unsigned int b = 0; b < possibilitiesForLine[a].size(); b++)
             {
-                // get ALL the possibilities of shapes at this point for the shape of the game
-                vector<vector<vector<int>>> possibilitiesForLine = this->shape->getPossibleCoordinatesToCheck(z, e);
+                Pawn* currentPawn = grid[possibilitiesForLine[a][b][0]][possibilitiesForLine[a][b][1]];
 
-                // to store the number of Pawns fitting the Shape, in all rotations and positions
-                int count = 1;
-
-                // for each shape possibility
-                for (unsigned int a = 0; a < possibilitiesForLine.size(); a++)
+                // check for reference pawn
+                if(referencePawn == nullptr)
                 {
-                    bool stillOkForBright = true, stillOkForSmall = true, stillOkForSquare = true, stillOkForHollow = true;
-                    Pawn* firstPawn = grid[possibilitiesForLine[a][0][0]][possibilitiesForLine[a][0][1]];
+                    if(currentPawn != nullptr)
+                        referencePawn = currentPawn;
+                }
 
-                    if(firstPawn != nullptr)
-                    {
-                        // for each coordinate
-                        bool stop = false;
-                        for (unsigned int b = 1; b < possibilitiesForLine[a].size() && !stop; b++)
-                        {
-                            Pawn* currentPawn = grid[possibilitiesForLine[a][b][0]][possibilitiesForLine[a][b][1]];
+                // we have the reference pawn and there's a new pawn in the shape
+                else if(currentPawn != nullptr)
+                {
+                    // new pawn in shape
+                    pawnNbInShape++;
 
-                            if(currentPawn != nullptr) {
-                                stillOkForBright = (stillOkForBright && firstPawn->getPoints()[0] == currentPawn->getPoints()[0]);
-                                stillOkForSmall = (stillOkForSmall && firstPawn->getPoints()[1] == currentPawn->getPoints()[1]);
-                                stillOkForSquare = (stillOkForSquare && firstPawn->getPoints()[2] == currentPawn->getPoints()[2]);
-                                stillOkForHollow = (stillOkForHollow && firstPawn->getPoints()[3] == currentPawn->getPoints()[3]);
-                                if(stillOkForBright || stillOkForHollow || stillOkForSmall || stillOkForSquare)
-                                    count++;
-                            }
-                            else
-                                stop = true;
-                        }
-                        if(count>maxCount)
-                            maxCount = count;
-                    }
+                    // change boolean values
+                    stillOkForBright = (stillOkForBright && referencePawn->getPoints()[0] == currentPawn->getPoints()[0]);
+                    stillOkForSmall = (stillOkForSmall && referencePawn->getPoints()[1] == currentPawn->getPoints()[1]);
+                    stillOkForSquare = (stillOkForSquare && referencePawn->getPoints()[2] == currentPawn->getPoints()[2]);
+                    stillOkForHollow = (stillOkForHollow && referencePawn->getPoints()[3] == currentPawn->getPoints()[3]);
                 }
             }
+
+            commonCharacteristics = (int) stillOkForBright + (int) stillOkForSmall + (int) stillOkForSquare + (int) stillOkForHollow;
+            result += pawnNbInShape * commonCharacteristics;
         }
     }
-    cout<<endl<<maxCount<<endl;
-    return maxCount;
-
+    cout << result << endl;
+    return result;
 }
 
 void GameEngine::addPawn(int const& i, int const& j)
@@ -309,18 +297,6 @@ void GameEngine::addPawn(int const& i, int const& j)
         {
             grid[i][j] = selectedPawn;
             selectedPawn = nullptr;
-            cout << "Sélectionnez une pièce pour votre adversaire" << endl;
-
-            for(unsigned int a =0; a<grid.size(); a++)
-            {
-                for(unsigned int b=0;b<grid.size();b++)
-                {
-                    if(grid[a][b] != nullptr)
-                        cout<<"Pawn";
-                    else cout<<"Vide";
-                }
-                cout<<endl;
-            }
 
             // if won
             if(isWon(i, j))
@@ -328,6 +304,8 @@ void GameEngine::addPawn(int const& i, int const& j)
                 cout << "Nice you have won!" << endl;
                 this->gameIsRunning = false;
             }
+            else
+                cout << "Sélectionnez une pièce pour votre adversaire" << endl;
         }
         else cout<<"Impossible" << endl;
     }
@@ -351,7 +329,7 @@ void GameEngine::selectPawn(int const& i)
         availablePawn[i] = nullptr;
         isPlayer1Turn = !isPlayer1Turn;
         if(!isPlayer1Turn && this->onePlayer)
-            AI(2);
+            playAI(2);
     }
 }
 

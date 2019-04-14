@@ -58,10 +58,21 @@ public:
      */
     bool isWon(int const& i, int const& j) const;
 
-    void AI(int depth);
-    int Min(vector<vector<Pawn*>>, vector<Pawn*> &copyAvailablePawns, int &depth);
-    int Max(vector<vector<Pawn*>>, vector<Pawn*> &copyAvailablePawns, int &depth);
-    int evaluateGrid(vector<vector<Pawn*>> &grid) const;
+    void playAI(int const& depth);
+    int min(vector<vector<Pawn*>> const&, vector<Pawn*> &copyAvailablePawns, int depth, int const& line, int const& col);
+    int max(vector<vector<Pawn*>> const&, vector<Pawn*> &copyAvailablePawns, int depth, int const& line, int const& col);
+
+    /**
+     * This function evaluates the grid depending of a pawn at (line, col) coordinates.
+     * It evaluates the grid with the sum of common characteristics between all the pawns in a shape possibility * the number of pawns fitting with the shape.
+     * The result is the sum of this value for each shape possibility at this point.
+     * We assume that the pawn is already put in the grid at (line, col) coordinates.
+     * @param grid: the grid to evaluate
+     * @param line: the line of the played pawn
+     * @param col: the column of the player pawn
+     * @return the evaluation number
+     */
+    int evaluateGrid(vector<vector<Pawn*>> const& grid, int const& line, int const& col) const;
 
     /**
      * This function adds a pawn in the grid (the selected one).
