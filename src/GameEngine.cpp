@@ -346,12 +346,6 @@ int GameEngine::MINIMAX_AB(int depth, int const& line, int const& col, int const
     }
 }
 
-
-
-
-
-
-
 int GameEngine::evaluateGrid(vector<vector<Pawn*>> const& grid, int const& line, int const& col) const
 {
     int result = 0;
@@ -424,12 +418,7 @@ void GameEngine::addPawn(int const& i, int const& j)
                 this->gameIsRunning = false;
             }
             else
-            {
-                if(!this->onePlayer)
-                    text.setString("Selectionnez le pion de l'adverssaire");
-                else
-                    text.setString("L'IA calcul...");
-            }
+                text.setString("Selectionnez le pion de l'adverssaire");
         }
     }
 }
@@ -451,6 +440,8 @@ void GameEngine::selectPawn(int const& i)
         isPlayer1Turn = !isPlayer1Turn;
         if(!isPlayer1Turn && this->onePlayer)
             playAI(this->AIdif);
+
+        text.setString("Placez le pion sur la grille");
     }
 }
 
